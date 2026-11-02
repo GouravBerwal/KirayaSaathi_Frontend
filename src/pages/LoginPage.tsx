@@ -34,14 +34,18 @@ interface RegisterResponse {
   masked_email: string;
   cooldown_seconds: number;
   expires_in_minutes: number;
+  otp_preview?: string;
+  email_sent?: boolean;
 }
 
 interface ResendOtpResponse {
   detail: string;
-  email: string;
-  masked_email: string;
+  email?: string;
+  masked_email?: string;
   cooldown_seconds: number;
-  expires_in_minutes: number;
+  expires_in_minutes?: number;
+  otp_preview?: string;
+  email_sent?: boolean;
 }
 
 interface VerifyOtpResponse {
@@ -207,8 +211,17 @@ export default function LoginPage({
         setTargetEmail(res.email || trimmedEmail);
         setMaskedEmail(res.masked_email || trimmedEmail);
         setCooldown(res.cooldown_seconds || 60);
-        setOtpDigits(["", "", "", "", "", ""]);
-        setSuccess("Verification code sent to your email!");
+        if (res.otp_preview) {
+          setSuccess(`Verification code: ${res.otp_preview}`);
+          if (res.otp_preview.length === 6) {
+            setOtpDigits(res.otp_preview.split(""));
+          } else {
+            setOtpDigits(["", "", "", "", "", ""]);
+          }
+        } else {
+          setSuccess("Verification code sent to your email!");
+          setOtpDigits(["", "", "", "", "", ""]);
+        }
         setMode("otp_verification");
       } else if (mode === "login") {
         await apiRequest("/api/auth/login/", {
@@ -303,8 +316,17 @@ export default function LoginPage({
       });
 
       setCooldown(res.cooldown_seconds || 60);
-      setResendNotice("A new 6-digit code has been sent to your email inbox.");
-      setOtpDigits(["", "", "", "", "", ""]);
+      if (res.otp_preview) {
+        setResendNotice(`New Verification code: ${res.otp_preview}`);
+        if (res.otp_preview.length === 6) {
+          setOtpDigits(res.otp_preview.split(""));
+        } else {
+          setOtpDigits(["", "", "", "", "", ""]);
+        }
+      } else {
+        setResendNotice("A new 6-digit code has been sent to your email inbox.");
+        setOtpDigits(["", "", "", "", "", ""]);
+      }
       otpInputRefs.current[0]?.focus();
     } catch (err: unknown) {
       if (err instanceof ApiError) {
