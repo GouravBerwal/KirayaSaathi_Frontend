@@ -1,0 +1,707 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Rooms | KirayaSetu</title>
+
+    <!-- Space Grotesk Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Independent CSS -->
+    <link rel="stylesheet" href="{% static 'css/rooms.css' %}">
+</head>
+
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <a href="dashboard.html" class="brand">
+            <span class="brand-icon">
+                <i class="fa-solid fa-house"></i>
+            </span>
+
+            <span class="brand-text">
+                <strong>KirayaSetu</strong>
+                <small>SMART RENTAL MANAGEMENT</small>
+            </span>
+        </a>
+
+        <!-- Workspace Selector -->
+        <div class="workspace-selector">
+
+            <div class="workspace-avatar">RM</div>
+
+            <div class="workspace-info">
+                <strong>Mehta Properties</strong>
+                <span>Owner workspace</span>
+            </div>
+
+            <i class="fa-solid fa-angles-up-down workspace-arrow"></i>
+
+        </div>
+
+        <p class="sidebar-label">WORKSPACE</p>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'dashboard' %}" class="nav-link">
+                <i class="fa-solid fa-border-all"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{% url 'property_list' %}" class="nav-link">
+                <i class="fa-solid fa-building"></i>
+                <span>Properties</span>
+            </a>
+
+            <a href="{% url 'rooms' %}" class="nav-link active">
+                <i class="fa-solid fa-door-open"></i>
+                <span>Rooms</span>
+            </a>
+
+            <a href="{% url 'tenants' %}" class="nav-link">
+                <i class="fa-solid fa-users"></i>
+                <span>Tenants</span>
+            </a>
+
+            <a href="{% url 'rent_management' %}" class="nav-link">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Rent Management</span>
+            </a>
+
+            <a href="{% url 'electricity_bill_form' %}" class="nav-link">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Electricity Bills</span>
+            </a>
+
+            <a href="{% url 'invoice_list' %}" class="nav-link">
+                <i class="fa-regular fa-file-lines"></i>
+                <span>Invoices &amp; Receipts</span>
+            </a>
+
+            <a href="{% url 'reports' %}" class="nav-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Reports &amp; Analytics</span>
+            </a>
+
+            <a href="{% url 'notifications' %}" class="nav-link">
+                <i class="fa-regular fa-bell"></i>
+                <span>Notifications</span>
+                <span class="notification-count">5</span>
+            </a>
+
+            <a href="{% url 'settings' %}" class="nav-link">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+        <!-- Sidebar Bottom -->
+        <div class="sidebar-bottom">
+
+            <a href="help.html" class="help-link">
+                <i class="fa-regular fa-circle-question"></i>
+                <span>Help &amp; support ↗</span>
+            </a>
+
+            <div class="user-profile">
+
+                <div class="user-avatar">RM</div>
+
+                <div class="user-info">
+                    <strong>Rajesh Mehta</strong>
+                    <span>Workspace owner</span>
+                </div>
+
+                <a href="login.html" class="logout-link" aria-label="Log out">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+    <main class="main-area">
+
+        <!-- TOP NAVBAR -->
+        <header class="topbar">
+
+            <div class="page-name">Rooms</div>
+
+            <div class="topbar-right">
+
+                <label class="global-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="search"
+                        placeholder="Search anything..."
+                        aria-label="Search anything"
+                    >
+
+                    <span>⌘ K</span>
+                </label>
+
+                <a href="notifications.html"
+                   class="icon-button notification-button"
+                   aria-label="Notifications">
+
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+
+                </a>
+
+                <div class="topbar-divider"></div>
+
+                <a href="settings.html" class="topbar-user">
+
+                    <div class="user-avatar">RM</div>
+
+                    <span>Rajesh Mehta</span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <section class="page-content">
+
+            <!-- PAGE HEADING -->
+            <div class="page-heading">
+
+                <div class="heading-copy">
+                    <h1>A clear view of every room</h1>
+
+                    <p>
+                        Manage room availability, rent and allocations across your portfolio.
+                    </p>
+                </div>
+
+                <div class="heading-actions">
+
+                    <a href="rooms-export.html" class="button button-outline">
+                        <i class="fa-solid fa-download"></i>
+                        Export rooms
+                    </a>
+
+                    <a href="{% url 'add_room' %}" class="button button-primary">
+                        <i class="fa-solid fa-plus"></i>
+                        Add room
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUMMARY CARDS -->
+            <div class="stats-grid">
+
+                <!-- Total Rooms -->
+                <article class="stat-card">
+
+                    <div class="stat-top">
+                        <span>Total rooms</span>
+                        <i class="fa-solid fa-door-open"></i>
+                    </div>
+
+                    <strong class="stat-value">48</strong>
+
+                    <p class="stat-description">Across 4 properties</p>
+
+                </article>
+
+
+                <!-- Occupied -->
+                <article class="stat-card">
+
+                    <div class="stat-top">
+                        <span>Occupied</span>
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <strong class="stat-value">42</strong>
+
+                    <p class="stat-description positive-text">
+                        87.5% occupancy
+                    </p>
+
+                </article>
+
+
+                <!-- Vacant -->
+                <article class="stat-card">
+
+                    <div class="stat-top">
+                        <span>Vacant</span>
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+
+                    <strong class="stat-value">6</strong>
+
+                    <p class="stat-description">Ready for new tenants</p>
+
+                </article>
+
+
+                <!-- Average Rent -->
+                <article class="stat-card">
+
+                    <div class="stat-top">
+                        <span>Average monthly rent</span>
+                        <i class="fa-solid fa-indian-rupee-sign"></i>
+                    </div>
+
+                    <strong class="stat-value">₹12,000</strong>
+
+                    <p class="stat-description">Per occupied room</p>
+
+                </article>
+
+            </div>
+
+
+            <!-- ROOM INVENTORY -->
+            <section class="inventory-card">
+
+                <div class="inventory-heading">
+
+                    <h2>Room inventory</h2>
+
+                    <p>Your rooms, with all the essentials at a glance.</p>
+
+                </div>
+
+
+                <!-- INVENTORY TABS -->
+                <nav class="inventory-tabs" aria-label="Room status">
+
+                    <a href="rooms.html" class="inventory-tab active">
+                        All rooms · 48
+                    </a>
+
+                    <a href="rooms-occupied.html" class="inventory-tab">
+                        Occupied · 42
+                    </a>
+
+                    <a href="rooms-vacant.html" class="inventory-tab">
+                        Vacant · 6
+                    </a>
+
+                </nav>
+
+
+                <!-- TABLE TOOLBAR -->
+                <div class="inventory-toolbar">
+
+                    <label class="room-search">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="search"
+                            placeholder="Search room, property or tenant..."
+                            aria-label="Search room, property or tenant"
+                        >
+
+                    </label>
+
+                    <div class="inventory-filters">
+
+                        <a href="rooms.html" class="button button-outline">
+                            <i class="fa-solid fa-chevron-down"></i>
+                            All properties
+                        </a>
+
+                        <a href="rooms-filters.html" class="button button-outline">
+                            <i class="fa-solid fa-sliders"></i>
+                            Filters
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ROOM TABLE -->
+                <div class="table-wrapper">
+
+                    <table class="room-table">
+
+                        <thead>
+                            <tr>
+                                <th>ROOM</th>
+                                <th>PROPERTY / TYPE</th>
+                                <th>TENANT</th>
+                                <th>MONTHLY RENT</th>
+                                <th>DEPOSIT</th>
+                                <th>OCCUPANCY</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <!-- ROOM 1 -->
+                            <tr>
+
+                                <td>
+                                    <strong class="room-number">A-101</strong>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Shanti Residency</div>
+                                    <div class="table-secondary">First floor · 1 BHK</div>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Aarav Sharma</div>
+                                    <div class="table-secondary">Move-in: 01 Jan 2026</div>
+                                </td>
+
+                                <td class="money-cell">₹12,000</td>
+                                <td class="money-cell">₹24,000</td>
+
+                                <td>
+                                    <span class="status-badge occupied">
+                                        <i class="fa-solid fa-circle"></i>
+                                        Occupied
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="room-edit.html" class="table-action">Edit</a>
+                                    <span class="action-separator">·</span>
+                                    <a href="room-details.html" class="table-action">···</a>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROOM 2 -->
+                            <tr>
+
+                                <td>
+                                    <strong class="room-number">A-102</strong>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Shanti Residency</div>
+                                    <div class="table-secondary">First floor · 1 BHK</div>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Priya Patel</div>
+                                    <div class="table-secondary">Move-in: 01 Mar 2026</div>
+                                </td>
+
+                                <td class="money-cell">₹12,000</td>
+                                <td class="money-cell">₹24,000</td>
+
+                                <td>
+                                    <span class="status-badge occupied">
+                                        <i class="fa-solid fa-circle"></i>
+                                        Occupied
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="room-edit.html" class="table-action">Edit</a>
+                                    <span class="action-separator">·</span>
+                                    <a href="room-details.html" class="table-action">···</a>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROOM 3 -->
+                            <tr>
+
+                                <td>
+                                    <strong class="room-number">A-103</strong>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Shanti Residency</div>
+                                    <div class="table-secondary">First floor · 1 BHK</div>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">No tenant assigned</div>
+                                    <div class="table-secondary">Available now</div>
+                                </td>
+
+                                <td class="money-cell">₹12,000</td>
+                                <td class="money-cell">₹24,000</td>
+
+                                <td>
+                                    <span class="status-badge vacant">
+                                        <i class="fa-solid fa-circle"></i>
+                                        Vacant
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="room-allocate.html" class="table-action">
+                                        Allocate <span>→</span>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROOM 4 -->
+                            <tr>
+
+                                <td>
+                                    <strong class="room-number">A-104</strong>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Shanti Residency</div>
+                                    <div class="table-secondary">First floor · 1 BHK</div>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Rohan Verma</div>
+                                    <div class="table-secondary">Move-in: 01 Feb 2026</div>
+                                </td>
+
+                                <td class="money-cell">₹12,000</td>
+                                <td class="money-cell">₹24,000</td>
+
+                                <td>
+                                    <span class="status-badge occupied">
+                                        <i class="fa-solid fa-circle"></i>
+                                        Occupied
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="room-edit.html" class="table-action">Edit</a>
+                                    <span class="action-separator">·</span>
+                                    <a href="room-details.html" class="table-action">···</a>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROOM 5 -->
+                            <tr>
+
+                                <td>
+                                    <strong class="room-number">B-206</strong>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Shanti Residency</div>
+                                    <div class="table-secondary">Second floor · 1 BHK</div>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">No tenant assigned</div>
+                                    <div class="table-secondary">Available now</div>
+                                </td>
+
+                                <td class="money-cell">₹12,000</td>
+                                <td class="money-cell">₹24,000</td>
+
+                                <td>
+                                    <span class="status-badge vacant">
+                                        <i class="fa-solid fa-circle"></i>
+                                        Vacant
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="room-allocate.html" class="table-action">
+                                        Allocate <span>→</span>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROOM 6 -->
+                            <tr>
+
+                                <td>
+                                    <strong class="room-number">G-201</strong>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Greenview Apts.</div>
+                                    <div class="table-secondary">Second floor · 1 BHK</div>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Ananya Singh</div>
+                                    <div class="table-secondary">Move-in: 15 Apr 2026</div>
+                                </td>
+
+                                <td class="money-cell">₹12,000</td>
+                                <td class="money-cell">₹24,000</td>
+
+                                <td>
+                                    <span class="status-badge occupied">
+                                        <i class="fa-solid fa-circle"></i>
+                                        Occupied
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="room-edit.html" class="table-action">Edit</a>
+                                    <span class="action-separator">·</span>
+                                    <a href="room-details.html" class="table-action">···</a>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROOM 7 -->
+                            <tr>
+
+                                <td>
+                                    <strong class="room-number">L-204</strong>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Lakeside Homes</div>
+                                    <div class="table-secondary">Second floor · 1 BHK</div>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Sneha Rao</div>
+                                    <div class="table-secondary">Move-in: 16 Oct 2026</div>
+                                </td>
+
+                                <td class="money-cell">₹12,000</td>
+                                <td class="money-cell">₹24,000</td>
+
+                                <td>
+                                    <span class="status-badge occupied">
+                                        <i class="fa-solid fa-circle"></i>
+                                        Occupied
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="room-edit.html" class="table-action">Edit</a>
+                                    <span class="action-separator">·</span>
+                                    <a href="room-details.html" class="table-action">···</a>
+                                </td>
+
+                            </tr>
+
+
+                            <!-- ROOM 8 -->
+                            <tr>
+
+                                <td>
+                                    <strong class="room-number">S-103</strong>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">Sai Nivas</div>
+                                    <div class="table-secondary">First floor · 1 BHK</div>
+                                </td>
+
+                                <td>
+                                    <div class="table-primary">No tenant assigned</div>
+                                    <div class="table-secondary">Available now</div>
+                                </td>
+
+                                <td class="money-cell">₹12,000</td>
+                                <td class="money-cell">₹24,000</td>
+
+                                <td>
+                                    <span class="status-badge vacant">
+                                        <i class="fa-solid fa-circle"></i>
+                                        Vacant
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="room-allocate.html" class="table-action">
+                                        Allocate <span>→</span>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- TABLE FOOTER -->
+                <div class="inventory-footer">
+
+                    <span class="results-text">
+                        Showing 1–8 of 48 rooms
+                    </span>
+
+                    <nav class="pagination" aria-label="Room pages">
+
+                        <a href="rooms.html" class="pagination-button">
+                            Previous
+                        </a>
+
+                        <a href="rooms.html" class="pagination-button current">
+                            1
+                        </a>
+
+                        <a href="rooms-page-2.html" class="pagination-button">
+                            Next
+                        </a>
+
+                    </nav>
+
+                </div>
+
+            </section>
+
+
+            <!-- PAGE FOOTER -->
+            <footer class="page-footer">
+
+                <span>
+                    KirayaSetu · Smart rental management for every property owner
+                </span>
+
+                <span>All amounts in INR · IST</span>
+
+            </footer>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

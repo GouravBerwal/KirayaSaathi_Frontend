@@ -1,0 +1,477 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties | KirayaSetu</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/property_list.css' %}">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <a href="#" class="brand">
+            <span class="brand-icon">
+                <i class="fa-solid fa-house"></i>
+            </span>
+
+            <span class="brand-text">
+                <strong>KirayaSetu</strong>
+                <small>SMART RENTAL MANAGEMENT</small>
+            </span>
+        </a>
+
+        <!-- Workspace -->
+        <div class="workspace-selector">
+            <div class="workspace-avatar">RM</div>
+
+            <div class="workspace-info">
+                <strong>Mehta Properties</strong>
+                <span>Owner workspace</span>
+            </div>
+
+            <i class="fa-solid fa-angles-up-down workspace-arrow"></i>
+        </div>
+
+        <p class="sidebar-label">WORKSPACE</p>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'dashboard' %}" class="nav-link">
+                <i class="fa-solid fa-border-all"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{% url 'property_list' %}" class="nav-link active">
+                <i class="fa-solid fa-building"></i>
+                <span>Properties</span>
+            </a>
+
+            <a href="{% url 'rooms' %}" class="nav-link">
+                <i class="fa-solid fa-door-open"></i>
+                <span>Rooms</span>
+            </a>
+
+            <a href="{% url 'tenants' %}" class="nav-link">
+                <i class="fa-solid fa-users"></i>
+                <span>Tenants</span>
+            </a>
+
+            <a href="{% url 'rent_management' %}" class="nav-link">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Rent Management</span>
+            </a>
+
+            <a href="{% url 'electricity_bill_form' %}" class="nav-link">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Electricity Bills</span>
+            </a>
+
+            <a href="{% url 'invoice_list' %}" class="nav-link">
+                <i class="fa-regular fa-file-lines"></i>
+                <span>Invoices &amp; Receipts</span>
+            </a>
+
+            <a href="{% url 'reports' %}" class="nav-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Reports &amp; Analytics</span>
+            </a>
+
+            <a href="{% url 'notifications' %}" class="nav-link">
+                <i class="fa-regular fa-bell"></i>
+                <span>Notifications</span>
+                <span class="notification-count">5</span>
+            </a>
+
+            <a href="{% url 'settings' %}" class="nav-link">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="help-link">
+                <i class="fa-regular fa-circle-question"></i>
+                <span>Help &amp; support ↗</span>
+            </a>
+
+            <div class="user-profile">
+                <div class="user-avatar">RM</div>
+
+                <div class="user-info">
+                    <strong>Rajesh Mehta</strong>
+                    <span>Workspace owner</span>
+                </div>
+
+                <i class="fa-solid fa-arrow-right-from-bracket logout-icon"></i>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-area">
+
+        <!-- TOP NAVBAR -->
+        <header class="topbar">
+
+            <div class="page-name">Properties</div>
+
+            <div class="topbar-right">
+
+                <label class="global-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="search" placeholder="Search anything...">
+                    <span>⌘ K</span>
+                </label>
+
+                <button class="icon-button notification-button" aria-label="Notifications">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+
+                <div class="topbar-divider"></div>
+
+                <div class="topbar-user">
+                    <div class="user-avatar">RM</div>
+
+                    <span>Rajesh Mehta</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <section class="page-content">
+
+            <!-- PAGE HEADING -->
+            <div class="page-heading">
+
+                <div>
+                    <h1>Your properties, in one place</h1>
+                    <p>4 properties · 48 rooms · A clearer view of every address.</p>
+                </div>
+
+                <div class="heading-actions">
+
+                    <button class="button button-outline">
+                        <i class="fa-solid fa-download"></i>
+                        Export
+                    </button>
+
+                    <a href="{% url 'add-property' %}"><button class="button button-primary">
+                        <i class="fa-solid fa-plus"></i>
+                        Add property
+                    </button></a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH AND FILTERS -->
+            <div class="toolbar">
+
+                <label class="property-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="search" placeholder="Search properties or locations...">
+                </label>
+
+                <div class="toolbar-actions">
+
+                    <button class="button button-outline">
+                        <i class="fa-solid fa-location-dot"></i>
+                        Bengaluru
+                    </button>
+
+                    <button class="button button-outline">
+                        <i class="fa-solid fa-sliders"></i>
+                        Filters
+                    </button>
+
+                    <button class="button button-outline">
+                        <i class="fa-solid fa-border-all"></i>
+                        Grid view
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROPERTY GRID -->
+            <div class="property-grid">
+
+
+                <!-- PROPERTY 1 -->
+                <article class="property-card">
+
+                    <div class="property-image image-one">
+                        <div class="image-placeholder">
+                            <i class="fa-solid fa-building"></i>
+                            <span>Property image</span>
+                        </div>
+                    </div>
+
+                    <div class="property-body">
+
+                        <div class="property-title-row">
+                            <h2>Shanti Residency</h2>
+                            <button class="more-button" aria-label="More options">•••</button>
+                        </div>
+
+                        <p class="property-address">
+                            42, 5th Main Road, HSR Layout, Bengaluru
+                        </p>
+
+                        <div class="property-meta">
+                            <span>18 rooms · 16 occupied</span>
+                            <span class="vacant-badge">
+                                <i class="fa-solid fa-circle"></i>
+                                2 vacant
+                            </span>
+                        </div>
+
+                        <div class="occupancy-track">
+                            <div class="occupancy-fill" style="width: 88.89%;"></div>
+                        </div>
+
+                        <div class="property-finances">
+
+                            <div class="rent-collected">
+                                <span class="finance-label">RENT COLLECTED · OCT</span>
+                                <strong>₹1,74,000</strong>
+                            </div>
+
+                            <div class="pending-rent">
+                                <span class="finance-label">PENDING</span>
+                                <strong>₹18,000</strong>
+                            </div>
+
+                            <a href="{% url 'property-detail' %}" class="view-property">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                View property
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PROPERTY 2 -->
+                <article class="property-card">
+
+                    <div class="property-image image-two">
+                        <div class="image-placeholder">
+                            <i class="fa-solid fa-building"></i>
+                            <span>Property image</span>
+                        </div>
+                    </div>
+
+                    <div class="property-body">
+
+                        <div class="property-title-row">
+                            <h2>Greenview Apartments</h2>
+                            <button class="more-button" aria-label="More options">•••</button>
+                        </div>
+
+                        <p class="property-address">
+                            18, 12th Cross, Indiranagar, Bengaluru
+                        </p>
+
+                        <div class="property-meta">
+                            <span>12 rooms · 11 occupied</span>
+                            <span class="vacant-badge">
+                                <i class="fa-solid fa-circle"></i>
+                                1 vacant
+                            </span>
+                        </div>
+
+                        <div class="occupancy-track">
+                            <div class="occupancy-fill" style="width: 91.67%;"></div>
+                        </div>
+
+                        <div class="property-finances">
+
+                            <div class="rent-collected">
+                                <span class="finance-label">RENT COLLECTED · OCT</span>
+                                <strong>₹1,14,000</strong>
+                            </div>
+
+                            <div class="pending-rent">
+                                <span class="finance-label">PENDING</span>
+                                <strong>₹18,000</strong>
+                            </div>
+
+                            <a href="{% url 'property-detail' %}" class="view-property">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                View property
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PROPERTY 3 -->
+                <article class="property-card">
+
+                    <div class="property-image image-three">
+                        <div class="image-placeholder">
+                            <i class="fa-solid fa-building"></i>
+                            <span>Property image</span>
+                        </div>
+                    </div>
+
+                    <div class="property-body">
+
+                        <div class="property-title-row">
+                            <h2>Lakeside Homes</h2>
+                            <button class="more-button" aria-label="More options">•••</button>
+                        </div>
+
+                        <p class="property-address">
+                            7, Lake View Road, BTM Layout, Bengaluru
+                        </p>
+
+                        <div class="property-meta">
+                            <span>10 rooms · 9 occupied</span>
+                            <span class="vacant-badge">
+                                <i class="fa-solid fa-circle"></i>
+                                1 vacant
+                            </span>
+                        </div>
+
+                        <div class="occupancy-track">
+                            <div class="occupancy-fill" style="width: 90%;"></div>
+                        </div>
+
+                        <div class="property-finances">
+
+                            <div class="rent-collected">
+                                <span class="finance-label">RENT COLLECTED · OCT</span>
+                                <strong>₹96,000</strong>
+                            </div>
+
+                            <div class="pending-rent">
+                                <span class="finance-label">PENDING</span>
+                                <strong>₹12,000</strong>
+                            </div>
+
+                            <a href="{% url 'property-detail' %}" class="view-property">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                View property
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- PROPERTY 4 -->
+                <article class="property-card">
+
+                    <div class="property-image image-four">
+                        <div class="image-placeholder">
+                            <i class="fa-solid fa-building"></i>
+                            <span>Property image</span>
+                        </div>
+                    </div>
+
+                    <div class="property-body">
+
+                        <div class="property-title-row">
+                            <h2>Sai Nivas</h2>
+                            <button class="more-button" aria-label="More options">•••</button>
+                        </div>
+
+                        <p class="property-address">
+                            96, 2nd Stage, JP Nagar, Bengaluru
+                        </p>
+
+                        <div class="property-meta">
+                            <span>8 rooms · 6 occupied</span>
+                            <span class="vacant-badge">
+                                <i class="fa-solid fa-circle"></i>
+                                2 vacant
+                            </span>
+                        </div>
+
+                        <div class="occupancy-track">
+                            <div class="occupancy-fill" style="width: 75%;"></div>
+                        </div>
+
+                        <div class="property-finances">
+
+                            <div class="rent-collected">
+                                <span class="finance-label">RENT COLLECTED · OCT</span>
+                                <strong>₹66,000</strong>
+                            </div>
+
+                            <div class="pending-rent">
+                                <span class="finance-label">PENDING</span>
+                                <strong>₹6,000</strong>
+                            </div>
+
+                            <a href="{% url 'property-detail' %}" class="view-property">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                View property
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <!-- PROPERTY SUMMARY -->
+            <div class="portfolio-summary">
+                <span>Showing all 4 properties · Updated today at 10:42 AM</span>
+                <strong>Portfolio occupancy: 87.5%</strong>
+            </div>
+
+
+            <!-- FOOTER -->
+            <footer class="page-footer">
+                <span>KirayaSetu · Smart rental management for every property owner</span>
+                <span>All amounts in INR · IST</span>
+            </footer>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

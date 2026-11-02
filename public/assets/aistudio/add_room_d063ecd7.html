@@ -1,0 +1,598 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooms | KirayaSetu</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="{% static 'css/add_room.css' %}" />
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+
+      <!-- Logo -->
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M4 10.5L12 4L20 10.5V20H4V10.5Z"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M9 20V14H15V20"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <div class="brand-name">KirayaSetu</div>
+          <div class="brand-subtitle">SMART RENTAL MANAGEMENT</div>
+        </div>
+      </div>
+
+      <!-- Workspace -->
+      <div class="workspace-card">
+        <div class="workspace-avatar">RM</div>
+
+        <div class="workspace-info">
+          <div class="workspace-name">Mehta Properties</div>
+          <div class="workspace-sub">Owner workspace</div>
+        </div>
+
+        <svg class="workspace-chevron" viewBox="0 0 24 24" fill="none">
+          <path d="M8 10L12 6L16 10" stroke="currentColor" stroke-width="1.7"/>
+          <path d="M8 14L12 18L16 14" stroke="currentColor" stroke-width="1.7"/>
+        </svg>
+      </div>
+
+      <div class="nav-title">WORKSPACE</div>
+
+      <!-- Navigation -->
+      <nav class="sidebar-nav">
+
+        <a href="{% url 'dashboard' %}" class="nav-item">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="4" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.7"/>
+              <rect x="14" y="4" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.7"/>
+              <rect x="4" y="14" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.7"/>
+              <rect x="14" y="14" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+          </span>
+          Dashboard
+        </a>
+
+        <a href="{% url 'property_list' %}" class="nav-item">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 20V7L12 4L19 7V20" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M8 20V11H16V20" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M10 14H14M10 17H14" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </span>
+          Properties
+        </a>
+
+        <a href="{% url 'rooms' %}" class="nav-item active">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 20V5H18V20" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M3 20H21" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M10 8H14M10 11H14M10 14H14" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M16 8V14" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+          </span>
+          Rooms
+        </a>
+
+        <a href="{% url 'tenants' %}" class="nav-item">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="16.5" cy="9" r="2.3" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M3.5 20C3.5 16.7 5.8 14.5 9 14.5C12.2 14.5 14.5 16.7 14.5 20" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M14.5 15.2C17.7 14.8 20.5 16.8 20.5 20" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+          </span>
+          Tenants
+        </a>
+
+        <a href="{% url 'rent_management' %}" class="nav-item">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="6" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M4 10H20" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M15 14H18" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M7 4H17" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+          </span>
+          Rent Management
+        </a>
+
+        <a href="{% url 'electricity_bill_form' %}" class="nav-item">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M13 2L5 13H11L10 22L19 10H13L13 2Z"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"/>
+            </svg>
+          </span>
+          Electricity Bills
+        </a>
+
+        <a href="{% url 'invoice_list' %}" class="nav-item">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 3H15L19 7V21H6V3Z" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M14 3V8H19" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M9 12H16M9 15H16M9 18H14" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </span>
+          Invoices &amp; Receipts
+        </a>
+
+        <a href="{% url 'reports' %}" class="nav-item">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 19V14M10 19V10M15 19V6M20 19V3"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"/>
+              <path d="M4 8L9 6L14 9L20 4"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"/>
+            </svg>
+          </span>
+          Reports &amp; Analytics
+        </a>
+
+        <a href="{% url 'notifications' %}" class="nav-item">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M18 9C18 5.7 15.3 3 12 3C8.7 3 6 5.7 6 9V14L4 17H20L18 14V9Z"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linejoin="round"/>
+              <path d="M10 20H14" stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+          </span>
+          Notifications
+          <span class="notification-count">5</span>
+        </a>
+
+        <a href="{% url 'settings' %}" class="nav-item">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 7H20M4 12H20M4 17H20"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"/>
+              <circle cx="9" cy="7" r="2" fill="white" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="15" cy="12" r="2" fill="white" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="10" cy="17" r="2" fill="white" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </span>
+          Settings
+        </a>
+
+      </nav>
+
+      <!-- Sidebar bottom -->
+      <div class="sidebar-bottom">
+
+        <a href="#" class="help-link">
+          <span class="help-icon">?</span>
+          <span>Help &amp; support ↗</span>
+        </a>
+
+        <div class="profile">
+          <div class="profile-avatar">RM</div>
+          <div class="profile-info">
+            <div class="profile-name">Rajesh Mehta</div>
+            <div class="profile-role">Workspace owner</div>
+          </div>
+
+          <span class="logout-icon">↪</span>
+        </div>
+
+      </div>
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+    <main class="main">
+
+      <!-- Top Header -->
+      <header class="topbar">
+        <div class="topbar-title">Rooms</div>
+
+        <div class="topbar-right">
+
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="6.5"
+                stroke="currentColor"
+                stroke-width="1.8"/>
+              <path d="M16 16L20 20"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"/>
+            </svg>
+            <span>Search anything...</span>
+            <kbd>⌘ K</kbd>
+          </div>
+
+          <div class="notification">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M18 9C18 5.7 15.3 3 12 3C8.7 3 6 5.7 6 9V14L4 17H20L18 14V9Z"
+                stroke="currentColor"
+                stroke-width="1.7"/>
+              <path d="M10 20H14"
+                stroke="currentColor"
+                stroke-width="1.7"/>
+            </svg>
+            <span></span>
+          </div>
+
+          <div class="top-divider"></div>
+
+          <div class="top-profile">
+            <div class="top-avatar">RM</div>
+            <span>Rajesh Mehta</span>
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M8 10L12 14L16 10"
+                stroke="currentColor"
+                stroke-width="1.7"/>
+            </svg>
+          </div>
+
+        </div>
+      </header>
+
+
+      <!-- ================= PAGE CONTENT ================= -->
+      <section class="content">
+
+        <!-- Breadcrumb + title -->
+        <div class="page-head">
+
+          <a href="{% url 'rooms' %}"><div class="breadcrumb">
+            <span class="back-arrow">←</span>
+            <span>Rooms / New property setup</span>
+          </div></a>
+
+          <div class="heading-row">
+            <div>
+              <h1>Every room, ready to manage</h1>
+              <p>
+                Set up the room inventory for your new property, then welcome your first tenant.
+              </p>
+            </div>
+
+            <button class="property-selector">
+              <span class="chevron-down">⌄</span>
+              Palm Grove Residency
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- Property setup banner -->
+        <div class="setup-banner">
+
+          <div class="setup-left">
+            <div class="setup-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 20V6L12 3L19 6V20"
+                  stroke="currentColor"
+                  stroke-width="1.8"/>
+                <path d="M9 20V11H15V20"
+                  stroke="currentColor"
+                  stroke-width="1.8"/>
+                <path d="M9 8H15"
+                  stroke="currentColor"
+                  stroke-width="1.6"/>
+              </svg>
+            </div>
+
+            <div>
+              <div class="setup-title">Palm Grove Residency</div>
+              <div class="setup-sub">
+                24, 8th Cross, Sector 2, HSR Layout, Bengaluru · New property setup
+              </div>
+            </div>
+          </div>
+
+          <div class="setup-status">SETUP DRAFT</div>
+
+        </div>
+
+
+        <!-- Stat cards -->
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span>Total rooms</span>
+
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M6 20V5H18V20"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M3 20H21"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M10 8H14M10 11H14M10 14H14"
+                  stroke="currentColor"
+                  stroke-width="1.5"/>
+              </svg>
+            </div>
+
+            <div class="stat-number">0</div>
+            <div class="stat-desc">Your room inventory starts here</div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span>Allocated tenants</span>
+
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="9" cy="8" r="3"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <circle cx="16.5" cy="9" r="2.2"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M3.5 20C3.5 16.7 5.8 14.5 9 14.5C12.2 14.5 14.5 16.7 14.5 20"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M14.5 15.2C17.7 14.8 20.5 16.8 20.5 20"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+              </svg>
+            </div>
+
+            <div class="stat-number">0</div>
+            <div class="stat-desc">Add rooms before allocating tenants</div>
+          </div>
+
+
+          <div class="stat-card">
+            <div class="stat-top">
+              <span>Monthly rent potential</span>
+
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="6" width="16" height="13" rx="2"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M4 10H20"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M15 14H18"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M7 4H17"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+              </svg>
+            </div>
+
+            <div class="stat-number">₹0</div>
+            <div class="stat-desc">Calculated from your room inventory</div>
+          </div>
+
+        </div>
+
+
+        <!-- Room inventory -->
+        <div class="inventory-card">
+
+          <div class="inventory-header">
+            <h2>Room inventory</h2>
+            <span>0 rooms added</span>
+          </div>
+
+
+          <div class="inventory-body">
+
+            <!-- Room illustration -->
+            <div class="room-illustration">
+
+              <div class="room-pill">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M7 20V5H17V20"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+                  <path d="M4 20H20"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+                  <path d="M11 8H15"
+                    stroke="currentColor"
+                    stroke-width="1.5"/>
+                </svg>
+                <span>A-101</span>
+              </div>
+
+              <div class="room-pill">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M7 20V5H17V20"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+                  <path d="M4 20H20"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+                  <path d="M11 8H15"
+                    stroke="currentColor"
+                    stroke-width="1.5"/>
+                </svg>
+                <span>A-102</span>
+              </div>
+
+              <div class="room-pill">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M7 20V5H17V20"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+                  <path d="M4 20H20"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+                  <path d="M11 8H15"
+                    stroke="currentColor"
+                    stroke-width="1.5"/>
+                </svg>
+                <span>A-103</span>
+              </div>
+
+              <div class="add-room-circle">+</div>
+
+            </div>
+
+
+            <h2 class="empty-title">
+              A fresh start for every room
+            </h2>
+
+            <p class="empty-description">
+              No rooms have been added to Palm Grove Residency yet. Add your first room to<br>
+              start tracking occupancy, rent and electricity.
+            </p>
+
+
+            <div class="empty-actions">
+
+              <button class="primary-button">
+                <span>+</span>
+                Add first room
+              </button>
+
+              <button class="secondary-button">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 15V4"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+                  <path d="M8 8L12 4L16 8"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+                  <path d="M5 12V19H19V12"
+                    stroke="currentColor"
+                    stroke-width="1.7"/>
+                </svg>
+                Import room list
+              </button>
+
+            </div>
+
+            <div class="csv-note">
+              You can add rooms one at a time or import several using a CSV file.
+            </div>
+
+          </div>
+        </div>
+
+
+        <!-- Bottom tips -->
+        <div class="tips-grid">
+
+          <div class="tip">
+            <div class="tip-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M6 20V5H18V20"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M3 20H21"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M10 8H14"
+                  stroke="currentColor"
+                  stroke-width="1.5"/>
+              </svg>
+            </div>
+
+            <div>
+              <h3>Name each room</h3>
+              <p>Use familiar numbers such as A-101, A-102 and B-201.</p>
+            </div>
+          </div>
+
+
+          <div class="tip">
+            <div class="tip-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="4" y="6" width="16" height="13" rx="2"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M4 10H20"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M7 4H17"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+              </svg>
+            </div>
+
+            <div>
+              <h3>Set the essentials</h3>
+              <p>Add monthly rent, deposit and an electricity meter.</p>
+            </div>
+          </div>
+
+
+          <div class="tip">
+            <div class="tip-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="9" cy="8" r="3"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <circle cx="16.5" cy="9" r="2.2"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+                <path d="M3.5 20C3.5 16.7 5.8 14.5 9 14.5C12.2 14.5 14.5 16.7 14.5 20"
+                  stroke="currentColor"
+                  stroke-width="1.7"/>
+              </svg>
+            </div>
+
+            <div>
+              <h3>Welcome a tenant</h3>
+              <p>Allocate a tenant once the room is ready.</p>
+            </div>
+          </div>
+
+        </div>
+
+
+        <!-- Footer -->
+        <footer class="page-footer">
+          <span>KirayaSetu · Smart rental management for every property owner</span>
+          <span>All amounts in INR · IST</span>
+        </footer>
+
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

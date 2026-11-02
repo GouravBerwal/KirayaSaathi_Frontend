@@ -1,0 +1,773 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KirayaSetu - Notifications</title>
+
+  <link rel="stylesheet" href="{% static 'css/notifications.css' %}" />
+</head>
+
+<body>
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 10.5L12 5l7 5.5v8.2a1.3 1.3 0 0 1-1.3 1.3H6.3A1.3 1.3 0 0 1 5 18.7v-8.2Z"
+                stroke="currentColor" stroke-width="1.8"/>
+          <path d="M9.2 20v-5.5h5.6V20"
+                stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+      </div>
+
+      <div class="brand-text">
+        <div class="brand-name">KirayaSetu</div>
+        <div class="brand-subtitle">SMART RENTAL MANAGEMENT</div>
+      </div>
+    </div>
+
+
+    <!-- Workspace -->
+    <div class="workspace-card">
+      <div class="workspace-avatar">RM</div>
+
+      <div class="workspace-info">
+        <strong>Mehta Properties</strong>
+        <span>Owner workspace</span>
+      </div>
+
+      <svg class="workspace-chevron" viewBox="0 0 24 24" fill="none">
+        <path d="M8 10l4-4 4 4M8 14l4 4 4-4"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+
+    <div class="sidebar-label">WORKSPACE</div>
+
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+
+      <a href="{% url 'dashboard' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="4" y="4" width="6" height="6" rx="1"
+                stroke="currentColor" stroke-width="1.7"/>
+          <rect x="14" y="4" width="6" height="6" rx="1"
+                stroke="currentColor" stroke-width="1.7"/>
+          <rect x="4" y="14" width="6" height="6" rx="1"
+                stroke="currentColor" stroke-width="1.7"/>
+          <rect x="14" y="14" width="6" height="6" rx="1"
+                stroke="currentColor" stroke-width="1.7"/>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+
+
+      <a href="{% url 'property_list' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4.5 20V8.5L12 4l7.5 4.5V20"
+                stroke="currentColor" stroke-width="1.7"/>
+          <path d="M8 20v-5h8v5M8 9h1M8 12h1M15 9h1M15 12h1"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"/>
+        </svg>
+        <span>Properties</span>
+      </a>
+
+
+      <a href="{% url 'rooms' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 20V6.5L9 4v16M9 20h10V9l-4-2.5V20"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linejoin="round"/>
+          <path d="M7 9h.01M7 12h.01M7 15h.01M12 11h.01M12 14h.01M12 17h.01"
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round"/>
+        </svg>
+        <span>Rooms</span>
+      </a>
+
+
+      <a href="{% url 'tenants' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="9" cy="8" r="3"
+                  stroke="currentColor" stroke-width="1.7"/>
+          <path d="M3.5 19c.5-3.2 2.3-5 5.5-5s5 1.8 5.5 5"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"/>
+          <path d="M15 6.5a2.6 2.6 0 0 1 0 5M16 14c2.2.5 3.7 2 4.2 4"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"/>
+        </svg>
+        <span>Tenants</span>
+      </a>
+
+
+      <a href="{% url 'rent_management' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="4" y="6" width="16" height="13" rx="2"
+                stroke="currentColor" stroke-width="1.7"/>
+          <path d="M7 6V4h10v2M4 10h16"
+                stroke="currentColor" stroke-width="1.7"/>
+          <path d="M16 13h2"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"/>
+        </svg>
+        <span>Rent Management</span>
+      </a>
+
+
+      <a href="{% url 'electricity_bill_form' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M13.5 2.8L5.5 13h6l-1 8.2L18.5 11h-6l1-8.2Z"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linejoin="round"/>
+        </svg>
+        <span>Electricity Bills</span>
+      </a>
+
+
+      <a href="{% url 'invoice_list' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M6 3.5h8l4 4V20a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"
+                stroke="currentColor" stroke-width="1.7"/>
+          <path d="M13 3.5V8h5M8 12h7M8 15h7M8 18h5"
+                stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round"/>
+        </svg>
+        <span>Invoices &amp; Receipts</span>
+      </a>
+
+
+      <a href="{% url 'reports' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 19V9M9 19v-6M14 19V6M19 19V3"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"/>
+          <path d="M4 8l5-3 5 2 5-4"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+        </svg>
+        <span>Reports &amp; Analytics</span>
+      </a>
+
+
+      <!-- ACTIVE -->
+      <a href="{% url 'notifications' %}" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M18 9.5a6 6 0 1 0 1.2 3.6"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"/>
+          <path d="M18 5.5v4h-4"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="2.2"
+                  stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+
+        <span>Notifications</span>
+        <span class="notification-count">5</span>
+      </a>
+
+
+      <a href="{% url 'settings' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 7h16M4 12h16M4 17h16"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"/>
+          <circle cx="8" cy="7" r="2"
+                  fill="currentColor"/>
+          <circle cx="15" cy="12" r="2"
+                  fill="currentColor"/>
+          <circle cx="10" cy="17" r="2"
+                  fill="currentColor"/>
+        </svg>
+        <span>Settings</span>
+      </a>
+
+    </nav>
+
+
+    <!-- Sidebar bottom -->
+    <div class="sidebar-bottom">
+
+      <a class="help-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="8.5"
+                  stroke="currentColor" stroke-width="1.7"/>
+          <path d="M9.8 9.2a2.4 2.4 0 0 1 4.6 1c0 1.8-2.4 2-2.4 3.4"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"/>
+          <circle cx="12" cy="16.5" r=".8"
+                  fill="currentColor"/>
+        </svg>
+        <span>Help &amp; support ↗</span>
+      </a>
+
+
+      <div class="user-profile">
+        <div class="profile-avatar">RM</div>
+
+        <div class="profile-details">
+          <strong>Rajesh Mehta</strong>
+          <span>Workspace owner</span>
+        </div>
+
+        <svg class="logout-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4"
+                stroke="currentColor" stroke-width="1.7"/>
+          <path d="M14 8l4 4-4 4M10 12h8"
+                stroke="currentColor" stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+    </div>
+
+  </aside>
+
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+
+    <!-- Top Header -->
+    <header class="top-header">
+
+      <div class="page-section-name">
+        Notifications
+      </div>
+
+      <div class="header-right">
+
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="10.8" cy="10.8" r="5.8"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+            <path d="M15.2 15.2L20 20"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"/>
+          </svg>
+
+          <span>Search anything...</span>
+          <kbd>⌘ K</kbd>
+        </div>
+
+
+        <div class="header-notification">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6.5 17h11l-1.2-2v-4.1a4.3 4.3 0 0 0-8.6 0V15l-1.2 2Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linejoin="round"/>
+            <path d="M10 19.5h4"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"/>
+          </svg>
+          <i></i>
+        </div>
+
+
+        <div class="header-divider"></div>
+
+
+        <div class="header-user">
+          <div class="header-avatar">RM</div>
+          <strong>Rajesh Mehta</strong>
+
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M8 10l4 4 4-4"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+      </div>
+    </header>
+
+
+    <!-- ================= CONTENT ================= -->
+    <section class="content">
+
+      <!-- Page Heading -->
+      <div class="page-heading">
+
+        <div>
+          <h1>A little heads-up goes a long way</h1>
+          <p>Stay a step ahead of rent, bills and important rental updates.</p>
+        </div>
+
+        <div class="heading-actions">
+
+          <button class="btn secondary">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M12 5v14"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"/>
+              <circle cx="7" cy="12" r="2"
+                      stroke="currentColor"
+                      stroke-width="1.5"/>
+              <circle cx="17" cy="12" r="2"
+                      stroke="currentColor"
+                      stroke-width="1.5"/>
+            </svg>
+            Notification preferences
+          </button>
+
+          <button class="btn primary">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 12.5l4 4L19 6.5"
+                    stroke="currentColor"
+                    stroke-width="1.9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+            </svg>
+            Mark all as read
+          </button>
+
+        </div>
+      </div>
+
+
+      <!-- Main Grid -->
+      <div class="dashboard-grid">
+
+        <!-- ================= INBOX ================= -->
+        <section class="inbox-card">
+
+          <div class="inbox-header">
+            <h2>Your inbox</h2>
+            <p>5 unread updates need a moment of your attention.</p>
+          </div>
+
+
+          <!-- Tabs -->
+          <div class="tabs">
+
+            <button class="tab active">
+              All updates
+            </button>
+
+            <button class="tab">
+              Unread · 5
+            </button>
+
+            <button class="tab">
+              Rent
+            </button>
+
+            <button class="tab">
+              Electricity
+            </button>
+
+            <button class="tab">
+              Workspace
+            </button>
+
+          </div>
+
+
+          <div class="today-label">
+            TODAY · 17 OCTOBER
+          </div>
+
+
+          <!-- Notification 1 -->
+          <article class="notification-card unread">
+
+            <div class="notification-icon warning">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="7.5"
+                        stroke="currentColor"
+                        stroke-width="1.8"/>
+                <path d="M12 8v5"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"/>
+                <circle cx="12" cy="16" r="1"
+                        fill="currentColor"/>
+              </svg>
+            </div>
+
+            <div class="notification-content">
+
+              <h3>4 rent payments are overdue</h3>
+
+              <p>
+                ₹36,000 is outstanding from Rohan, Neha, Karan and Meera.
+                Rent was due on 05 October.
+              </p>
+
+              <span class="notification-time">
+                Today, 10:00 AM
+              </span>
+
+            </div>
+
+            <div class="notification-right">
+              <span class="unread-dot"></span>
+              <a href="#">Review overdue rent →</a>
+            </div>
+
+          </article>
+
+
+          <!-- Notification 2 -->
+          <article class="notification-card unread">
+
+            <div class="notification-icon blue">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="6" y="5" width="12" height="14" rx="2"
+                      stroke="currentColor"
+                      stroke-width="1.7"/>
+                <path d="M9 3v4M15 3v4M6 9h12"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"/>
+                <path d="M9 13h.01M12 13h.01M15 13h.01"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <div class="notification-content">
+
+              <h3>Upcoming rent: ₹18,000 due on 20 Oct</h3>
+
+              <p>
+                Rahul Das and Pooja Shah have upcoming balances.
+                Send them a friendly reminder before the due date.
+              </p>
+
+              <span class="notification-time">
+                Today, 9:30 AM
+              </span>
+
+            </div>
+
+            <div class="notification-right">
+              <span class="unread-dot"></span>
+              <a href="#">View upcoming payments →</a>
+            </div>
+
+          </article>
+
+
+          <!-- Notification 3 -->
+          <article class="notification-card unread">
+
+            <div class="notification-icon electricity">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M13.5 3L6 13h5.5l-1 8L17.5 11H12l1.5-8Z"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <div class="notification-content">
+
+              <h3>12 electricity bills are awaiting payment</h3>
+
+              <p>
+                ₹4,200 is due on 20 October. Share bills with tenants
+                so there are no surprises.
+              </p>
+
+              <span class="notification-time">
+                Today, 9:00 AM
+              </span>
+
+            </div>
+
+            <div class="notification-right">
+              <span class="unread-dot"></span>
+              <a href="#">Review electricity bills →</a>
+            </div>
+
+          </article>
+
+
+          <!-- Notification 4 -->
+          <article class="notification-card unread">
+
+            <div class="notification-icon blue">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="5" y="6" width="14" height="13" rx="2"
+                      stroke="currentColor"
+                      stroke-width="1.7"/>
+                <path d="M8 3v6M16 3v6M5 10h14"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"/>
+                <path d="M9 14h6M9 17h4"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <div class="notification-content">
+
+              <h3>November rent is on the horizon</h3>
+
+              <p>
+                Your next monthly cycle includes 42 rooms and ₹5,04,000 in rent.
+                Most payments are due on 05 November.
+              </p>
+
+              <span class="notification-time">
+                Today, 8:30 AM
+              </span>
+
+            </div>
+
+            <div class="notification-right">
+              <span class="unread-dot"></span>
+              <a href="#">View rent schedule →</a>
+            </div>
+
+          </article>
+
+
+          <!-- Notification 5 -->
+          <article class="notification-card unread">
+
+            <div class="notification-icon blue">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M4 18l4-5 4 3 7-9"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M15 7h4v4"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <div class="notification-content">
+
+              <h3>Your portfolio snapshot is ready</h3>
+
+              <p>
+                October rent collection is at 89.3%.
+                See income trends and occupancy across your 4 properties.
+              </p>
+
+              <span class="notification-time">
+                Today, 8:00 AM
+              </span>
+
+            </div>
+
+            <div class="notification-right">
+              <span class="unread-dot"></span>
+              <a href="#">Explore reports →</a>
+            </div>
+
+          </article>
+
+
+          <!-- Earlier -->
+          <div class="earlier-label">
+            EARLIER UPDATES
+          </div>
+
+
+          <!-- Notification 6 -->
+          <article class="notification-card">
+
+            <div class="notification-icon success">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="7.5"
+                        stroke="currentColor"
+                        stroke-width="1.7"/>
+                <path d="M9 12l2 2 4-4"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <div class="notification-content">
+
+              <h3>Payment received from Aarav Sharma</h3>
+
+              <p>
+                ₹12,960 received via UPI for October rent and electricity.
+                Receipt RCT-2026-0841 is ready.
+              </p>
+
+              <span class="notification-time">
+                Today, 10:42 AM · Read
+              </span>
+
+            </div>
+
+            <div class="notification-right read-action">
+              <a href="#">View receipt →</a>
+            </div>
+
+          </article>
+
+
+          <!-- Notification 7 -->
+          <article class="notification-card">
+
+            <div class="notification-icon blue">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="9" cy="8" r="3"
+                        stroke="currentColor"
+                        stroke-width="1.7"/>
+                <path d="M3.5 19c.5-3.2 2.3-5 5.5-5s5 1.8 5.5 5"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"/>
+                <path d="M17 10v6M14 13h6"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            <div class="notification-content">
+
+              <h3>Sneha Rao has moved in</h3>
+
+              <p>
+                Room L-204 at Lakeside Homes is now occupied.
+                Tenant details and room allocation are up to date.
+              </p>
+
+              <span class="notification-time">
+                Yesterday, 4:30 PM · Read
+              </span>
+
+            </div>
+
+            <div class="notification-right read-action">
+              <a href="#">View tenant →</a>
+            </div>
+
+          </article>
+
+        </section>
+
+
+        <!-- ================= RIGHT COLUMN ================= -->
+        <aside class="right-column">
+
+          <!-- Stay in loop -->
+          <section class="side-card">
+
+            <h2>Stay in the loop</h2>
+
+            <div class="preference-item">
+              <span>WhatsApp reminders</span>
+              <strong>Enabled for rent &amp; bills</strong>
+            </div>
+
+            <div class="preference-item">
+              <span>Email summaries</span>
+              <strong>Weekly · Monday, 9:00 AM</strong>
+            </div>
+
+            <div class="preference-item">
+              <span>Rent reminder schedule</span>
+              <strong>3 days before the due date</strong>
+            </div>
+
+            <button class="manage-btn">
+
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 7h14M5 12h14M5 17h14"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"/>
+                <circle cx="9" cy="7" r="2"
+                        fill="white"
+                        stroke="currentColor"
+                        stroke-width="1.5"/>
+                <circle cx="15" cy="12" r="2"
+                        fill="white"
+                        stroke="currentColor"
+                        stroke-width="1.5"/>
+                <circle cx="10" cy="17" r="2"
+                        fill="white"
+                        stroke="currentColor"
+                        stroke-width="1.5"/>
+              </svg>
+
+              Manage preferences
+            </button>
+
+          </section>
+
+
+          <!-- Considerate card -->
+          <section class="consider-card">
+
+            <div class="consider-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M18 15.5a7 7 0 1 1-9.5-9.5A6 6 0 0 0 18 15.5Z"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linejoin="round"/>
+              </svg>
+            </div>
+
+            <h2>Considerate by design</h2>
+
+            <p>
+              Automated reminders are sent between 9 AM and 7 PM IST.
+              Your tenants’ quiet hours stay quiet.
+            </p>
+
+          </section>
+
+        </aside>
+
+      </div>
+
+
+      <!-- Footer -->
+      <footer class="page-footer">
+
+        <span>
+          KirayaSetu · Smart rental management for every property owner
+        </span>
+
+        <span>
+          All amounts in INR · IST
+        </span>
+
+      </footer>
+
+    </section>
+
+  </main>
+
+</body>
+</html>

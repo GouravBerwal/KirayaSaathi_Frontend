@@ -1,0 +1,621 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#EAF4F7">
+    <title>Tenants | KirayaSetu</title>
+    <link rel="stylesheet" href="{% static 'css/tenants.css' %}">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <a href="#" class="brand">
+            <span class="brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
+                    <path d="M9 21v-8h6v8"/>
+                </svg>
+            </span>
+            <span class="brand-copy">
+                <strong>KirayaSetu</strong>
+                <small>SMART RENTAL MANAGEMENT</small>
+            </span>
+        </a>
+
+        <a href="#" class="workspace-switcher">
+            <span class="avatar">RM</span>
+            <span class="workspace-copy">
+                <strong>Mehta Properties</strong>
+                <small>Owner workspace</small>
+            </span>
+            <svg class="workspace-chevron" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8">
+                <path d="m8 10 4-4 4 4M8 14l4 4 4-4"/>
+            </svg>
+        </a>
+
+        <p class="nav-heading">WORKSPACE</p>
+
+        <nav class="main-navigation" aria-label="Main navigation">
+
+            <a href="{% url 'dashboard' %}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    <rect x="14" y="14" width="7" height="7" rx="1"/>
+                </svg>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{% url 'property_list' %}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="7" width="18" height="14" rx="1.5"/>
+                    <path d="M7 7V4h10v3M7 11v2m5-2v2m5-2v2M7 16v2m5-2v2m5-2v2"/>
+                </svg>
+                <span>Properties</span>
+            </a>
+
+            <a href="{% url 'rooms' %}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 21h16M6 21V5l6-2v18m0-12h6v12"/>
+                    <path d="M9 7v1m0 4v1m0 4v1m6-4v1m0 3v1"/>
+                </svg>
+                <span>Rooms</span>
+            </a>
+
+            <a href="{% url 'tenants' %}" class="nav-link active" aria-current="page">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="8" r="3.5"/>
+                    <path d="M2.5 20v-2a6.5 6.5 0 0 1 13 0v2"/>
+                    <path d="M16 5.2a3.5 3.5 0 0 1 0 6.6M18 14a5.5 5.5 0 0 1 3.5 5.1"/>
+                </svg>
+                <span>Tenants</span>
+            </a>
+
+            <a href="{% url 'rent_management' %}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="5" width="18" height="15" rx="2"/>
+                    <path d="M3 9h18M16 14h2"/>
+                    <path d="M6 5V3h12v2"/>
+                </svg>
+                <span>Rent Management</span>
+            </a>
+
+            <a href="{% url 'electricity_bill_form' %}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m13 2-10 12h8l-1 8 11-13h-8z"/>
+                </svg>
+                <span>Electricity Bills</span>
+            </a>
+
+            <a href="{% url 'invoice_list' %}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+                    <path d="M14 3v5h5M8 12h8M8 16h8"/>
+                </svg>
+                <span>Invoices &amp; Receipts</span>
+            </a>
+
+            <a href="{% url 'reports' %}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3v18h18"/>
+                    <path d="m7 14 4-4 4 3 6-7"/>
+                    <path d="M7 18v-1m4 1v-5m4 5v-3m6 3V9"/>
+                </svg>
+                <span>Reports &amp; Analytics</span>
+            </a>
+
+            <a href="{% url 'notifications' %}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                    <path d="M10 21h4"/>
+                </svg>
+                <span>Notifications</span>
+                <span class="notification-count">5</span>
+            </a>
+
+            <a href="{% url 'settings' %}" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 7h10m4 0h2M4 17h2m4 0h10"/>
+                    <circle cx="16" cy="7" r="2"/>
+                    <circle cx="8" cy="17" r="2"/>
+                </svg>
+                <span>Settings</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="help-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4"/>
+                    <path d="M12 16.5h.01"/>
+                </svg>
+                <span>Help &amp; support ↗</span>
+            </a>
+
+            <div class="sidebar-profile">
+                <span class="avatar">RM</span>
+                <span class="profile-copy">
+                    <strong>Rajesh Mehta</strong>
+                    <small>Workspace owner</small>
+                </span>
+                <a href="#" class="logout-icon" aria-label="Sign out">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 17l5-5-5-5M15 12H3"/>
+                        <path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/>
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+    </aside>
+
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+        <!-- TOP NAVBAR -->
+        <header class="topbar">
+
+            <div class="page-label">Tenants</div>
+
+            <div class="topbar-right">
+
+                <div class="global-search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="1.8" stroke-linecap="round">
+                        <circle cx="10.8" cy="10.8" r="6.8"/>
+                        <path d="m16 16 5 5"/>
+                    </svg>
+                    <span>Search anything...</span>
+                    <kbd>⌘ K</kbd>
+                </div>
+
+                <a href="notifications.html" class="topbar-icon" aria-label="Notifications">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+                        <path d="M10 21h4"/>
+                    </svg>
+                    <span class="notification-dot"></span>
+                </a>
+
+                <span class="topbar-divider"></span>
+
+                <div class="topbar-profile">
+                    <span class="avatar">RM</span>
+                    <span>Rajesh Mehta</span>
+                    <svg class="profile-chevron" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="1.8">
+                        <path d="m7 10 5 5 5-5"/>
+                    </svg>
+                </div>
+
+            </div>
+        </header>
+
+
+        <!-- PAGE CONTENT -->
+        <main class="page-content">
+
+            <!-- PAGE INTRO -->
+            <section class="page-intro">
+
+                <div class="intro-copy">
+                    <h1>Good relationships start here</h1>
+                    <p>Contact details, room allocations and rental histories, thoughtfully organised.</p>
+                </div>
+
+                <div class="intro-actions">
+
+                    <a href="#" class="button button-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 3v12m-5-5 5 5 5-5"/>
+                            <path d="M5 14v5h14v-5"/>
+                        </svg>
+                        Export directory
+                    </a>
+
+                    <a href="#" class="button button-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="8" r="3.5"/>
+                            <path d="M2.5 20v-2a6.5 6.5 0 0 1 13 0v2"/>
+                            <path d="M19 8v6m-3-3h6"/>
+                        </svg>
+                        Add tenant
+                    </a>
+
+                </div>
+
+            </section>
+
+
+            <!-- SUMMARY CARDS -->
+            <section class="stats-grid" aria-label="Tenant statistics">
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Active tenants</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="8" r="3.5"/>
+                            <path d="M2.5 20v-2a6.5 6.5 0 0 1 13 0v2"/>
+                            <path d="M16 5.2a3.5 3.5 0 0 1 0 6.6M18 14a5.5 5.5 0 0 1 3.5 5.1"/>
+                        </svg>
+                    </div>
+                    <strong class="stat-value">42</strong>
+                    <p class="stat-note">Across 4 properties</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>New this month</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="8" r="3.5"/>
+                            <path d="M2.5 20v-2a6.5 6.5 0 0 1 13 0v2"/>
+                            <path d="M19 8v6m-3-3h6"/>
+                        </svg>
+                    </div>
+                    <strong class="stat-value">3</strong>
+                    <p class="stat-note note-success">Welcome to the neighbourhood</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Security deposits held</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 3 5 6v5c0 4.5 3 7.5 7 10 4-2.5 7-5.5 7-10V6z"/>
+                            <path d="m9 12 2 2 4-4"/>
+                        </svg>
+                    </div>
+                    <strong class="stat-value">₹10,08,000</strong>
+                    <p class="stat-note">42 deposits · ₹24,000 each</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span>Rent outstanding</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M12 7v5l3 2"/>
+                        </svg>
+                    </div>
+                    <strong class="stat-value">6 tenants</strong>
+                    <p class="stat-note note-warning">₹54,000 remaining this month</p>
+                </article>
+
+            </section>
+
+
+            <!-- TENANT DIRECTORY -->
+            <section class="directory-card">
+
+                <div class="directory-heading">
+                    <h2>Tenant directory</h2>
+                    <p>A little context for every conversation.</p>
+                </div>
+
+                <!-- DIRECTORY TABS -->
+                <nav class="directory-tabs" aria-label="Tenant categories">
+                    <a href="#" class="directory-tab selected">Active tenants · 42</a>
+                    <a href="#" class="directory-tab">Past tenants · 8</a>
+                </nav>
+
+                <!-- TOOLBAR -->
+                <div class="directory-toolbar">
+
+                    <form class="directory-search" action="#" method="get" role="search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="1.8" stroke-linecap="round">
+                            <circle cx="10.8" cy="10.8" r="6.8"/>
+                            <path d="m16 16 5 5"/>
+                        </svg>
+                        <input type="search" name="search"
+                               placeholder="Search name, phone or room..."
+                               aria-label="Search tenants">
+                    </form>
+
+                    <div class="toolbar-actions">
+
+                        <a href="#" class="button button-secondary property-filter">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m7 10 5 5 5-5"/>
+                            </svg>
+                            All properties
+                        </a>
+
+                        <a href="#" class="button button-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 7h4m4 0h8M4 17h8m4 0h4M8 4v6m8 4v6"/>
+                                <circle cx="10" cy="7" r="2"/>
+                                <circle cx="14" cy="17" r="2"/>
+                            </svg>
+                            Filters
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- TENANT TABLE -->
+                <div class="table-scroll">
+                    <table class="tenant-table">
+
+                        <thead>
+                            <tr>
+                                <th scope="col">TENANT</th>
+                                <th scope="col">CONTACT</th>
+                                <th scope="col">PROPERTY / ROOM</th>
+                                <th scope="col">RENT</th>
+                                <th scope="col">MOVE-IN</th>
+                                <th scope="col">STATUS</th>
+                                <th scope="col" class="action-column"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+                                <td>
+                                    <div class="tenant-identity">
+                                        <span class="tenant-avatar">AS</span>
+                                        <span class="tenant-details">
+                                            <strong>Aarav Sharma</strong>
+                                            <small>aarav.sharma@email.com</small>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="contact-cell">+91 98765 43210</td>
+                                <td>
+                                    <div class="cell-details">
+                                        <strong>Shanti Residency</strong>
+                                        <small>Room A-101</small>
+                                    </div>
+                                </td>
+                                <td class="rent-cell">₹12,000</td>
+                                <td class="date-cell">01 Jan 2026</td>
+                                <td><span class="status-badge"><span></span>Active</span></td>
+                                <td>
+                                    <a href="#" class="row-action" aria-label="View Aarav Sharma">↗</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="tenant-identity">
+                                        <span class="tenant-avatar">PP</span>
+                                        <span class="tenant-details">
+                                            <strong>Priya Patel</strong>
+                                            <small>priya.patel@email.com</small>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="contact-cell">+91 98234 56781</td>
+                                <td>
+                                    <div class="cell-details">
+                                        <strong>Shanti Residency</strong>
+                                        <small>Room A-102</small>
+                                    </div>
+                                </td>
+                                <td class="rent-cell">₹12,000</td>
+                                <td class="date-cell">01 Mar 2026</td>
+                                <td><span class="status-badge"><span></span>Active</span></td>
+                                <td>
+                                    <a href="#" class="row-action" aria-label="View Priya Patel">↗</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="tenant-identity">
+                                        <span class="tenant-avatar">RV</span>
+                                        <span class="tenant-details">
+                                            <strong>Rohan Verma</strong>
+                                            <small>rohan.v@email.com</small>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="contact-cell">+91 99012 34567</td>
+                                <td>
+                                    <div class="cell-details">
+                                        <strong>Shanti Residency</strong>
+                                        <small>Room A-104</small>
+                                    </div>
+                                </td>
+                                <td class="rent-cell">₹12,000</td>
+                                <td class="date-cell">01 Feb 2026</td>
+                                <td><span class="status-badge"><span></span>Active</span></td>
+                                <td>
+                                    <a href="#" class="row-action" aria-label="View Rohan Verma">↗</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="tenant-identity">
+                                        <span class="tenant-avatar">NG</span>
+                                        <span class="tenant-details">
+                                            <strong>Neha Gupta</strong>
+                                            <small>neha.gupta@email.com</small>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="contact-cell">+91 98451 23456</td>
+                                <td>
+                                    <div class="cell-details">
+                                        <strong>Shanti Residency</strong>
+                                        <small>Room B-203</small>
+                                    </div>
+                                </td>
+                                <td class="rent-cell">₹12,000</td>
+                                <td class="date-cell">01 Jun 2026</td>
+                                <td><span class="status-badge"><span></span>Active</span></td>
+                                <td>
+                                    <a href="#" class="row-action" aria-label="View Neha Gupta">↗</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="tenant-identity">
+                                        <span class="tenant-avatar">AS</span>
+                                        <span class="tenant-details">
+                                            <strong>Ananya Singh</strong>
+                                            <small>ananya.s@email.com</small>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="contact-cell">+91 98860 71234</td>
+                                <td>
+                                    <div class="cell-details">
+                                        <strong>Greenview Apts.</strong>
+                                        <small>Room G-201</small>
+                                    </div>
+                                </td>
+                                <td class="rent-cell">₹12,000</td>
+                                <td class="date-cell">15 Apr 2026</td>
+                                <td><span class="status-badge"><span></span>Active</span></td>
+                                <td>
+                                    <a href="#" class="row-action" aria-label="View Ananya Singh">↗</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="tenant-identity">
+                                        <span class="tenant-avatar">KM</span>
+                                        <span class="tenant-details">
+                                            <strong>Karan Malhotra</strong>
+                                            <small>karan.m@email.com</small>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="contact-cell">+91 98440 89123</td>
+                                <td>
+                                    <div class="cell-details">
+                                        <strong>Greenview Apts.</strong>
+                                        <small>Room G-302</small>
+                                    </div>
+                                </td>
+                                <td class="rent-cell">₹12,000</td>
+                                <td class="date-cell">01 May 2026</td>
+                                <td><span class="status-badge"><span></span>Active</span></td>
+                                <td>
+                                    <a href="#" class="row-action" aria-label="View Karan Malhotra">↗</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="tenant-identity">
+                                        <span class="tenant-avatar">SR</span>
+                                        <span class="tenant-details">
+                                            <strong>Sneha Rao</strong>
+                                            <small>sneha.rao@email.com</small>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="contact-cell">+91 99001 23456</td>
+                                <td>
+                                    <div class="cell-details">
+                                        <strong>Lakeside Homes</strong>
+                                        <small>Room L-204</small>
+                                    </div>
+                                </td>
+                                <td class="rent-cell">₹12,000</td>
+                                <td class="date-cell">16 Oct 2026</td>
+                                <td><span class="status-badge"><span></span>Active</span></td>
+                                <td>
+                                    <a href="#" class="row-action" aria-label="View Sneha Rao">↗</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="tenant-identity">
+                                        <span class="tenant-avatar">AN</span>
+                                        <span class="tenant-details">
+                                            <strong>Aditya Nair</strong>
+                                            <small>aditya.nair@email.com</small>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="contact-cell">+91 98455 60123</td>
+                                <td>
+                                    <div class="cell-details">
+                                        <strong>Sai Nivas</strong>
+                                        <small>Room S-102</small>
+                                    </div>
+                                </td>
+                                <td class="rent-cell">₹12,000</td>
+                                <td class="date-cell">01 Aug 2026</td>
+                                <td><span class="status-badge"><span></span>Active</span></td>
+                                <td>
+                                    <a href="#" class="row-action" aria-label="View Aditya Nair">↗</a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!-- PAGINATION -->
+                <div class="pagination">
+
+                    <p>Showing 1–8 of 42 active tenants</p>
+
+                    <nav class="pagination-controls" aria-label="Pagination">
+                        <a href="#" class="pagination-button">Previous</a>
+                        <a href="#" class="pagination-number" aria-current="page">1</a>
+                        <a href="#" class="pagination-button">Next</a>
+                    </nav>
+
+                </div>
+
+            </section>
+
+
+            <!-- FOOTER -->
+            <footer class="page-footer">
+                <span>KirayaSetu · Smart rental management for every property owner</span>
+                <span>All amounts in INR · IST</span>
+            </footer>
+
+        </main>
+    </div>
+
+</div>
+
+</body>
+</html>
