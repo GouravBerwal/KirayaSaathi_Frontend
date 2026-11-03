@@ -721,23 +721,36 @@ export const PropertyList: React.FC<PropertyListProps> = ({
           <Building className="mx-auto h-10 w-10 text-slate-300" />
 
           <h2 className="mt-3 text-base font-semibold text-slate-700">
-            No properties found
+            {properties.length === 0 ? 'No properties added yet' : 'No matching properties found'}
           </h2>
 
           <p className="mt-1 text-sm text-slate-500">
-            Try another search term or select All Cities.
+            {properties.length === 0
+              ? 'Your workspace is empty. Click below to add your first rental property.'
+              : 'Try another search term or select All Cities.'}
           </p>
 
-          <button
-            type="button"
-            onClick={() => {
-              setSearchTerm('');
-              setCityFilter('All');
-            }}
-            className="mt-4 rounded-xl bg-[#035E7B] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#024B63]"
-          >
-            Clear filters
-          </button>
+          {properties.length === 0 ? (
+            <button
+              type="button"
+              onClick={() => onNavigate('add_property')}
+              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#035E7B] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#024B63] shadow-sm cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>+ Add Your First Property</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                setSearchTerm('');
+                setCityFilter('All');
+              }}
+              className="mt-4 rounded-xl bg-[#035E7B] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#024B63]"
+            >
+              Clear filters
+            </button>
+          )}
         </section>
       )}
 

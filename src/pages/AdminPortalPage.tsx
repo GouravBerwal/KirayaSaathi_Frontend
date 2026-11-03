@@ -338,6 +338,11 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
             </p>
           </div>
 
+          <div className="p-3.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-slate-400 text-[11px] leading-relaxed mb-4">
+            <span className="font-semibold text-amber-400 block mb-0.5">💡 Multi-User Testing Tip:</span>
+            Browsers share cookies across tabs. If testing as a new Owner in your main browser, open this Admin Console in an <strong className="text-slate-200">Incognito / Private Window</strong> to approve requests without overwriting the owner session.
+          </div>
+
           <form onSubmit={handleAdminLogin} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">

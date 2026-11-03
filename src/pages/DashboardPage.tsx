@@ -20,6 +20,7 @@ import {
   AlertCircle,
   ChevronDown,
   ChevronUp,
+  Sparkles,
 } from 'lucide-react';
 import { apiRequest } from '../utils/api';
 
@@ -738,6 +739,32 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </button>
         </div>
       </section>
+
+      {/* Brand New Owner Welcome Hero Banner when 0 properties exist */}
+      {totalProperties === 0 && (
+        <section className="bg-gradient-to-r from-teal-50 via-sky-50 to-indigo-50 border border-teal-200/80 rounded-2xl p-6 sm:p-8 text-left flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-xs">
+          <div className="space-y-2 max-w-xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-100/90 text-teal-800 text-xs font-bold border border-teal-200">
+              <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+              <span>Workspace Verified & Active</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">
+              Welcome to KirayaSaathi, {ownerName || 'Property Owner'}!
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Your account has been approved. Your workspace currently has 0 properties. Start by adding your first building, apartment, or PG to allocate rooms and collect rent.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => onNavigate('add_property')}
+            className="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#035E7B] hover:bg-[#024B63] text-white font-bold text-xs sm:text-sm shadow-md transition active:scale-95 cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            <span>+ Add Your First Property</span>
+          </button>
+        </section>
+      )}
 
       {/* Summary Stat Cards */}
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
