@@ -244,7 +244,12 @@ export default function LoginPage({
         }
         setError(err.message);
       } else if (err instanceof Error) {
-        setError(err.message);
+        const rawMsg = err.message || "";
+        if (rawMsg.toLowerCase().includes("load failed") || rawMsg.toLowerCase().includes("failed to fetch")) {
+          setError("Server se connect ho raha hai... Kripya 5 second baad dobara Sign In dabayein.");
+        } else {
+          setError(err.message);
+        }
       } else {
         setError("Something went wrong. Please try again.");
       }

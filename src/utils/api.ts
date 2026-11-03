@@ -138,9 +138,16 @@ export async function apiRequest<T>(
 
   const unsafeMethods = ["POST", "PUT", "PATCH", "DELETE"];
 
+  const isExemptAuth =
+    endpoint === "/api/auth/login/" ||
+    endpoint === "/api/auth/register/" ||
+    endpoint === "/api/auth/signup/" ||
+    endpoint === "/api/auth/verify-email-otp/" ||
+    endpoint === "/api/auth/resend-email-otp/";
+
   if (unsafeMethods.includes(method)) {
     let csrfToken = getCsrfToken();
-    if (!csrfToken) {
+    if (!csrfToken && !isExemptAuth) {
       try {
         csrfToken = await getCsrfCookie();
       } catch {
@@ -148,30 +155,54 @@ export async function apiRequest<T>(
       }
     }
 
-    if (!csrfToken) {
-      csrfToken = getCsrfToken();
-    }
-
     if (csrfToken) {
       headers["X-CSRFToken"] = csrfToken;
     }
   }
 
-  const response = await fetch(
-    `${API_BASE_URL}${endpoint}`,
-    {
-      method,
-      headers,
-      credentials: "include",
-      ...(options.body !== undefined
-        ? {
-            body: isFormData
-              ? (options.body as FormData)
-              : JSON.stringify(options.body),
-          }
-        : {}),
-    },
-  );
+  let response: Response;
+  try {
+    response = await fetch(
+      `${API_BASE_URL}${endpoint}`,
+      {
+        method,
+        headers,
+        credentials: "include",
+        ...(options.body !== undefined
+          ? {
+              body: isFormData
+                ? (options.body as FormData)
+                : JSON.stringify(options.body),
+            }
+          : {}),
+      },
+    );
+  } catch (netErr: unknown) {
+    // Retry once for cold starts or mobile connection interruptions
+    try {
+      response = await fetch(
+        `${API_BASE_URL}${endpoint}`,
+        {
+          method,
+          headers,
+          credentials: "include",
+          ...(options.body !== undefined
+            ? {
+                body: isFormData
+                  ? (options.body as FormData)
+                  : JSON.stringify(options.body),
+              }
+            : {}),
+        },
+      );
+    } catch {
+      const msg =
+        netErr instanceof Error && netErr.message && !netErr.message.toLowerCase().includes("failed")
+          ? netErr.message
+          : "Server se connect nahi ho pa raha hai. Kripya 5 second baad dobara try karein.";
+      throw new ApiError(0, msg);
+    }
+  }
 
   if (!response.ok) {
     let parsedData: any = null;
