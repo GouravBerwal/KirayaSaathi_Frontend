@@ -63,9 +63,13 @@ function getCsrfToken(): string | null {
   return null;
 }
 
-export async function getCsrfCookie(): Promise<string | null> {
+export async function getCsrfCookie(forceRefresh = false): Promise<string | null> {
+  if (!forceRefresh && memoryCsrfToken) {
+    return memoryCsrfToken;
+  }
+
   const response = await fetch(
-    `${API_BASE_URL}/api/auth/csrf/`,
+    `${API_BASE_URL}/api/auth/csrf/?_t=${Date.now()}`,
     {
       method: "GET",
       credentials: "include",
@@ -151,9 +155,10 @@ export async function apiRequest<T>(
     let parsedData: any = null;
     let detailMessage = "";
     let code: string | undefined;
+    let responseText = "";
 
     try {
-      const responseText = await response.text();
+      responseText = await response.text();
 
       try {
         parsedData = JSON.parse(responseText);
@@ -192,6 +197,50 @@ export async function apiRequest<T>(
       detailMessage = response.statusText;
     }
 
+    // Auto-retry on CSRF rotation/mismatch
+    if (
+      response.status === 403 &&
+      (detailMessage.toLowerCase().includes("csrf") ||
+        responseText.toLowerCase().includes("csrf"))
+    ) {
+      try {
+        const freshCsrf = await getCsrfCookie(true);
+        if (freshCsrf) {
+          headers["X-CSRFToken"] = freshCsrf;
+          const retryResponse = await fetch(`${API_BASE_URL}${endpoint}`, {
+            method,
+            headers,
+            credentials: "include",
+            ...(options.body !== undefined
+              ? {
+                  body: isFormData
+                    ? (options.body as FormData)
+                    : JSON.stringify(options.body),
+                }
+              : {}),
+          });
+
+          if (retryResponse.ok) {
+            if (retryResponse.status === 204) {
+              return undefined as T;
+            }
+            const retryJson = (await retryResponse.json()) as T;
+            if (
+              retryJson &&
+              typeof retryJson === "object" &&
+              "csrfToken" in retryJson &&
+              typeof (retryJson as { csrfToken: unknown }).csrfToken === "string"
+            ) {
+              memoryCsrfToken = (retryJson as { csrfToken: string }).csrfToken;
+            }
+            return retryJson;
+          }
+        }
+      } catch {
+        // Fall through to throw ApiError
+      }
+    }
+
     throw new ApiError(
       response.status,
       detailMessage ||
@@ -206,7 +255,16 @@ export async function apiRequest<T>(
     return undefined as T;
   }
 
-  return (await response.json()) as T;
+  const jsonResult = (await response.json()) as T;
+  if (
+    jsonResult &&
+    typeof jsonResult === "object" &&
+    "csrfToken" in jsonResult &&
+    typeof (jsonResult as { csrfToken: unknown }).csrfToken === "string"
+  ) {
+    memoryCsrfToken = (jsonResult as { csrfToken: string }).csrfToken;
+  }
+  return jsonResult;
 }
 
 // ======================================================
