@@ -211,7 +211,11 @@ export default function LoginPage({
         setSuccess("Verification code sent to your email! Please check your inbox.");
         setMode("otp_verification");
       } else if (mode === "login") {
-        await apiRequest("/api/auth/login/", {
+        const res = await apiRequest<{
+          token?: string;
+          csrfToken?: string;
+          user?: { id: number; username: string; email: string };
+        }>("/api/auth/login/", {
           method: "POST",
           body: {
             identifier: identifier.trim(),
@@ -219,12 +223,16 @@ export default function LoginPage({
           },
         });
 
+        if (res.token) {
+          localStorage.setItem("kiraya_auth_token", res.token);
+        }
+
         onLoginSuccess();
       }
     } catch (err: unknown) {
       if (err instanceof ApiError) {
-        // If unverified email detected during login
-        if (err.code === "EMAIL_NOT_VERIFIED" || err.status === 403) {
+        // Only redirect to OTP verification if in signup mode
+        if (mode === "signup" && (err.code === "EMAIL_NOT_VERIFIED" || err.status === 403)) {
           const userEmail = err.data?.email || identifier.trim();
           setTargetEmail(userEmail);
           setMaskedEmail(err.data?.masked_email || userEmail);
@@ -261,13 +269,17 @@ export default function LoginPage({
     setLoading(true);
 
     try {
-      await apiRequest<VerifyOtpResponse>("/api/auth/verify-email-otp/", {
+      const res = await apiRequest<VerifyOtpResponse & { token?: string }>("/api/auth/verify-email-otp/", {
         method: "POST",
         body: {
           email: targetEmail,
           otp: otpCode,
         },
       });
+
+      if (res.token) {
+        localStorage.setItem("kiraya_auth_token", res.token);
+      }
 
       setSuccess("Email verified successfully! Preparing your verification workspace...");
       setTimeout(() => {

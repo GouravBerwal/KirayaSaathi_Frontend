@@ -116,7 +116,7 @@ export async function apiRequest<T>(
     headers["Content-Type"] = "application/json";
   }
 
-  // Automatically attach isolated Admin Token for all admin API endpoints
+  // Automatically attach isolated Admin Token for admin endpoints, or Owner Token for user endpoints
   if (endpoint.startsWith("/api/admin/")) {
     const adminToken =
       typeof sessionStorage !== "undefined"
@@ -125,6 +125,15 @@ export async function apiRequest<T>(
     if (adminToken) {
       headers["X-Admin-Token"] = adminToken;
     }
+  } else {
+    const authToken =
+      typeof localStorage !== "undefined"
+        ? localStorage.getItem("kiraya_auth_token")
+        : null;
+    if (authToken) {
+      headers["X-Auth-Token"] = authToken;
+      headers["Authorization"] = `Bearer ${authToken}`;
+    }
   }
 
   const unsafeMethods = ["POST", "PUT", "PATCH", "DELETE"];
@@ -132,18 +141,20 @@ export async function apiRequest<T>(
   if (unsafeMethods.includes(method)) {
     let csrfToken = getCsrfToken();
     if (!csrfToken) {
-      csrfToken = await getCsrfCookie();
+      try {
+        csrfToken = await getCsrfCookie();
+      } catch {
+        // Fallback for strict mobile browsers that block cross-origin cookies
+      }
     }
 
     if (!csrfToken) {
       csrfToken = getCsrfToken();
     }
 
-    if (!csrfToken) {
-      throw new Error("CSRF token is not available.");
+    if (csrfToken) {
+      headers["X-CSRFToken"] = csrfToken;
     }
-
-    headers["X-CSRFToken"] = csrfToken;
   }
 
   const response = await fetch(

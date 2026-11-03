@@ -555,7 +555,7 @@ function AppContent() {
     try {
       const data = await apiRequest<CurrentUserProfile>('/api/auth/me/');
       setCurrentUserProfile(data);
-      if (data && data.email_verified) {
+      if (data) {
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
@@ -1698,7 +1698,7 @@ function AppContent() {
     setIsCheckingAuth(true);
     try {
       const profile = await refreshCurrentUserProfile();
-      if (profile && profile.email_verified) {
+      if (profile) {
         setIsAuthenticated(true);
         navigate('/dashboard');
       }
@@ -1712,7 +1712,8 @@ function AppContent() {
     setIsLoggingOut(true);
 
     try {
-      await apiRequest('/api/auth/logout/', { method: 'POST' });
+      await apiRequest('/api/auth/logout/', { method: 'POST' }).catch(() => {});
+      localStorage.removeItem('kiraya_auth_token');
 
       setIsAuthenticated(false);
       setCurrentUserProfile(null);
