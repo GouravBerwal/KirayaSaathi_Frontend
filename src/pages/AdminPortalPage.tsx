@@ -134,6 +134,24 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
 
   async function checkAdminAuth() {
     try {
+      const adminToken = sessionStorage.getItem("kiraya_admin_token");
+      if (adminToken) {
+        try {
+          const res = await apiRequest<{
+            authenticated: boolean;
+            admin_user?: { username: string; is_staff: boolean; is_superuser: boolean };
+          }>("/api/admin/auth/me/");
+          if (res.authenticated && res.admin_user) {
+            setIsAdminUser(true);
+            setCurrentAdminName(res.admin_user.username);
+            await loadAdminData();
+            return;
+          }
+        } catch {
+          sessionStorage.removeItem("kiraya_admin_token");
+        }
+      }
+
       const me = await apiRequest<{
         id: number;
         username: string;
@@ -161,7 +179,11 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
     setLoginLoading(true);
 
     try {
-      await apiRequest("/api/auth/login/", {
+      const res = await apiRequest<{
+        detail: string;
+        admin_token: string;
+        admin_user: { username: string; is_staff: boolean; is_superuser: boolean };
+      }>("/api/admin/auth/login/", {
         method: "POST",
         body: {
           identifier: adminUsername.trim(),
@@ -169,19 +191,13 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
         },
       });
 
-      const me = await apiRequest<{
-        id: number;
-        username: string;
-        is_staff?: boolean;
-        is_superuser?: boolean;
-      }>("/api/auth/me/");
-
-      if (me.is_staff || me.is_superuser) {
+      if (res && res.admin_token) {
+        sessionStorage.setItem("kiraya_admin_token", res.admin_token);
         setIsAdminUser(true);
-        setCurrentAdminName(me.username);
+        setCurrentAdminName(res.admin_user.username);
         await loadAdminData();
       } else {
-        setLoginError("Access Denied: This portal requires administrator or staff privileges.");
+        setLoginError("Failed to authenticate as administrator.");
         setIsAdminUser(false);
       }
     } catch (err: unknown) {
@@ -295,11 +311,7 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
   }
 
   async function handleLogout() {
-    try {
-      await apiRequest("/api/auth/logout/", { method: "POST" });
-    } catch {
-      // ignore
-    }
+    sessionStorage.removeItem("kiraya_admin_token");
     setIsAdminUser(false);
     if (onExit) onExit();
   }

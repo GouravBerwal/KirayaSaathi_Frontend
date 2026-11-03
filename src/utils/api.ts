@@ -116,6 +116,17 @@ export async function apiRequest<T>(
     headers["Content-Type"] = "application/json";
   }
 
+  // Automatically attach isolated Admin Token for all admin API endpoints
+  if (endpoint.startsWith("/api/admin/")) {
+    const adminToken =
+      typeof sessionStorage !== "undefined"
+        ? sessionStorage.getItem("kiraya_admin_token")
+        : null;
+    if (adminToken) {
+      headers["X-Admin-Token"] = adminToken;
+    }
+  }
+
   const unsafeMethods = ["POST", "PUT", "PATCH", "DELETE"];
 
   if (unsafeMethods.includes(method)) {
