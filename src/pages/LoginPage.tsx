@@ -70,10 +70,14 @@ export default function LoginPage({
   const [confirmPassword, setConfirmPassword] = useState("");
 
   // OTP Verification state
-  const [targetEmail, setTargetEmail] = useState("");
+  const [targetEmail, setTargetEmail] = useState<string>(() => {
+    return typeof sessionStorage !== "undefined"
+      ? sessionStorage.getItem("kiraya_pending_otp_email") || ""
+      : "";
+  });
   const [maskedEmail, setMaskedEmail] = useState("");
   const [otpDigits, setOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
-  const [cooldown, setCooldown] = useState<number>(60);
+  const [cooldown, setCooldown] = useState<number>(30);
   const [isResending, setIsResending] = useState(false);
   const [resendNotice, setResendNotice] = useState("");
 
@@ -204,9 +208,13 @@ export default function LoginPage({
         });
 
         // Registration initiated -> Transition to dedicated OTP verification step
-        setTargetEmail(res.email || trimmedEmail);
-        setMaskedEmail(res.masked_email || trimmedEmail);
-        setCooldown(res.cooldown_seconds || 60);
+        const validEmail = res.email || trimmedEmail;
+        setTargetEmail(validEmail);
+        if (typeof sessionStorage !== "undefined") {
+          sessionStorage.setItem("kiraya_pending_otp_email", validEmail);
+        }
+        setMaskedEmail(res.masked_email || validEmail);
+        setCooldown(res.cooldown_seconds || 30);
         setOtpDigits(["", "", "", "", "", ""]);
         setSuccess("Verification code sent to your email! Please check your inbox.");
         setMode("otp_verification");
@@ -292,6 +300,14 @@ export default function LoginPage({
       }, 500);
     } catch (err: unknown) {
       if (err instanceof ApiError) {
+        if (
+          err.code === "OTP_EXPIRED" ||
+          err.code === "MAX_ATTEMPTS_EXCEEDED" ||
+          err.code === "OTP_NOT_FOUND" ||
+          (err.message && err.message.toLowerCase().includes("expired"))
+        ) {
+          setCooldown(0); // Immediately enable Resend Code button
+        }
         setError(err.message);
       } else if (err instanceof Error) {
         setError(err.message);
@@ -311,16 +327,23 @@ export default function LoginPage({
     setResendNotice("");
     setIsResending(true);
 
+    const emailToUse = targetEmail || email.trim();
+    if (!emailToUse) {
+      setError("Email address missing. Please switch to Sign Up and enter your details again.");
+      setIsResending(false);
+      return;
+    }
+
     try {
       const res = await apiRequest<ResendOtpResponse>("/api/auth/resend-email-otp/", {
         method: "POST",
         body: {
-          email: targetEmail,
+          email: emailToUse,
         },
       });
 
-      setCooldown(res.cooldown_seconds || 60);
-      setResendNotice("A new 6-digit code has been sent to your email inbox.");
+      setCooldown(res.cooldown_seconds || 30);
+      setResendNotice("Naya 6-digit OTP code aapke email inbox par bhej diya gaya hai!");
       setOtpDigits(["", "", "", "", "", ""]);
       otpInputRefs.current[0]?.focus();
     } catch (err: unknown) {
@@ -568,7 +591,7 @@ export default function LoginPage({
                 {maskedEmail || targetEmail}
               </p>
               <p className="text-[11px] text-gray-500 mt-1">
-                Valid for 10 minutes. Check your Spam folder if not in inbox.
+                Valid for 30 minutes. Check your Spam folder if not in inbox.
               </p>
             </div>
 
