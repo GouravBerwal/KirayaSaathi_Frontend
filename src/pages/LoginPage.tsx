@@ -219,10 +219,10 @@ export default function LoginPage({
         setCooldown(res.cooldown_seconds || 30);
         if (res.fallback_otp && res.fallback_otp.length === 6) {
           setOtpDigits(res.fallback_otp.split(""));
-          setSuccess(`Account ready! Verification code: ${res.fallback_otp}`);
+          setSuccess(`Verification code: ${res.fallback_otp}`);
         } else {
           setOtpDigits(["", "", "", "", "", ""]);
-          setSuccess("Verification code sent to your email! Please check your inbox.");
+          setSuccess("6-digit verification code aapke Gmail par bhej diya gaya hai! Kripya apna inbox check karein.");
         }
         setMode("otp_verification");
       } else if (mode === "login") {
