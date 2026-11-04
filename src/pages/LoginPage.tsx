@@ -80,7 +80,7 @@ export default function LoginPage({
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
   // Forgot password & reset password state
-  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotUsername, setForgotUsername] = useState("");
   const [resetUid, setResetUid] = useState("");
   const [resetToken, setResetToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -419,18 +419,24 @@ export default function LoginPage({
     e.preventDefault();
     setError("");
     setSuccess("");
-    const trimmed = forgotEmail.trim();
+    const trimmed = forgotUsername.trim();
     if (!trimmed) {
-      setError("Kripya apna registered email enter karein.");
+      setError("Kripya apna registered username ya account ID enter karein.");
       return;
     }
     setLoading(true);
     try {
-      const res = await apiRequest<{ detail: string }>("/api/auth/password-reset-request/", {
-        method: "POST",
-        body: { email: trimmed },
-      });
-      setSuccess(res.detail || "Password reset link aapke Gmail inbox par bhej di gayi hai! Kripya apna email check karein.");
+      const res = await apiRequest<{ detail: string; masked_email?: string; username?: string }>(
+        "/api/auth/password-reset-request/",
+        {
+          method: "POST",
+          body: { identifier: trimmed },
+        }
+      );
+      setSuccess(
+        res.detail ||
+          "Password reset link aapke registered Gmail par bhej di gayi hai! Kripya apna inbox check karein."
+      );
     } catch (err: unknown) {
       if (err instanceof ApiError) {
         setError(err.message);
@@ -473,7 +479,7 @@ export default function LoginPage({
       setSuccess(res.detail || "Password safaltapoorvak update ho gaya hai! Ab aap naye password se login kar sakte hain.");
       setTimeout(() => {
         setMode("login");
-        setIdentifier(forgotEmail || identifier || "");
+        setIdentifier(forgotUsername || identifier || "");
         setPassword(newPassword);
         if (typeof window !== "undefined") {
           window.history.replaceState({}, document.title, window.location.pathname);
@@ -635,7 +641,7 @@ export default function LoginPage({
                     onClick={() => {
                       setError("");
                       setSuccess("");
-                      setForgotEmail(identifier.includes("@") ? identifier : "");
+                      setForgotUsername(identifier.trim());
                       setMode("forgot_password");
                     }}
                     className="text-xs font-semibold text-[#035E7B] hover:text-[#024B63] hover:underline transition"
@@ -749,31 +755,34 @@ export default function LoginPage({
           <form onSubmit={handleForgotPasswordRequest} className="space-y-4">
             <div className="rounded-xl bg-[#EAF4F7]/60 border border-[#035E7B]/15 p-4 text-center">
               <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#035E7B]/10 text-[#035E7B] mb-2">
-                <Mail className="h-5 w-5" />
+                <KeyRound className="h-5 w-5" />
               </div>
-              <h2 className="font-bold text-[#035E7B] text-base">Reset Password</h2>
+              <h2 className="font-bold text-[#035E7B] text-base">Forgot Password</h2>
               <p className="text-xs text-gray-600 mt-1">
-                Apna registered Gmail address enter karein. Hum aapko password reset karne ka link bhejenge.
+                Apna registered <strong>Username</strong> enter karein. Reset link seedhe aapke account ki registered Gmail ID par bheja jayega.
               </p>
             </div>
 
             <div>
               <label
-                htmlFor="forgotEmail"
+                htmlFor="forgotUsername"
                 className="mb-1.5 block text-xs sm:text-sm font-semibold text-[#142D3B]"
               >
-                Registered Email Address
+                Owner Username / Account ID
               </label>
               <input
-                id="forgotEmail"
-                type="email"
-                autoComplete="email"
+                id="forgotUsername"
+                type="text"
+                autoComplete="username"
                 required
-                value={forgotEmail}
-                onChange={(e) => setForgotEmail(e.target.value)}
-                placeholder="example@gmail.com"
+                value={forgotUsername}
+                onChange={(e) => setForgotUsername(e.target.value)}
+                placeholder="Enter username (e.g. gurjar)"
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 outline-none transition focus:border-[#035E7B] focus:ring-2 focus:ring-[#035E7B]/20"
               />
+              <p className="mt-1.5 text-[11px] text-gray-500">
+                Aapko email likhne ki zaroorat nahi hai. KirayaSaathi seedhe aapke registered owner Gmail par secure link bhejega.
+              </p>
             </div>
 
             {error && (
@@ -804,10 +813,10 @@ export default function LoginPage({
               {loading ? (
                 <span className="inline-flex items-center gap-2">
                   <RotateCw className="h-4 w-4 animate-spin" />
-                  Sending Link...
+                  Sending Link to Gmail...
                 </span>
               ) : (
-                "Send Reset Link to Gmail"
+                "Send Reset Link to Registered Gmail"
               )}
             </button>
 
