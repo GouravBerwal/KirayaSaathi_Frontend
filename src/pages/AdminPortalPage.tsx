@@ -341,8 +341,8 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
       <main className="min-h-screen bg-[#0F172A] flex items-center justify-center p-4">
         <section className="w-full max-w-md bg-[#1E293B] rounded-2xl p-6 sm:p-8 border border-slate-700 shadow-2xl text-white">
           <div className="text-center mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 mx-auto flex items-center justify-center mb-3">
-              <ShieldAlert className="w-8 h-8" />
+            <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200 p-2 mx-auto flex items-center justify-center mb-3 shadow-md">
+              <img src="/images/logo.png" alt="KirayaSaathi Logo" className="w-full h-full object-contain" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight">KirayaSaathi Admin Console</h1>
             <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
@@ -480,8 +480,8 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
       {/* Top Navbar */}
       <header className="bg-[#1E293B] border-b border-slate-800 px-4 sm:px-6 py-3 sm:py-4 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-40 shadow-lg">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center font-bold text-lg shrink-0">
-            <ShieldCheck className="w-6 h-6" />
+          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shrink-0 shadow-xs">
+            <img src="/images/logo.png" alt="KirayaSaathi Logo" className="w-full h-full object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-2">

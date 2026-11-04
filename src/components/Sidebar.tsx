@@ -238,8 +238,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => handleNavClick('dashboard')}
           className="flex items-center gap-2.5 text-left transition hover:opacity-90"
         >
-          <div className="w-[34px] h-[34px] rounded-lg  flex items-center justify-center text-white shrink-0 shadow-sm shadow-[#035E7B]/20">
-            <img src="images/logo.png" alt="logo" />
+          <div className="w-[36px] h-[36px] rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs">
+            <img src="/images/logo.png" alt="KirayaSaathi Logo" className="w-full h-full object-contain" />
           </div>
 
           <div>

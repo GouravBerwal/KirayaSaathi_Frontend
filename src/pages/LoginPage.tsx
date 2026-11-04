@@ -375,13 +375,8 @@ export default function LoginPage({
 
         {/* Header Branding */}
         <div className="mb-6 text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#035E7B]/10 text-[#035E7B] mb-3">
-            <img src="images/logo.png" alt="logo" />
-            {mode === "otp_verification" ? (
-              <ShieldCheck className="h-6 w-6 text-[#035E7B]" />
-            ) : (
-              <Sparkles className="h-6 w-6 text-[#035E7B]" />
-            )}
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white border border-slate-200/80 p-2 shadow-sm mb-3">
+            <img src="/images/logo.png" alt="KirayaSaathi Logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#035E7B]">
             KirayaSaathi

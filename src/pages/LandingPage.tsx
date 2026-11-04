@@ -230,8 +230,8 @@ export default function LandingPage({
           <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
             {/* Brand Logo */}
             <a href="#" className="flex items-center gap-2 sm:gap-3 group shrink-0">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-white shadow-md shadow-[#035E7B]/20 group-hover:scale-105 transition-transform">
-                <img src="images/logo.png" alt="logo" />
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <img src="/images/logo.png" alt="KirayaSaathi Logo" className="w-full h-full object-contain" />
               </div>
               <div>
                 <span className="text-lg sm:text-2xl font-bold tracking-tight text-[#035E7B] block leading-none font-display">
@@ -2064,8 +2064,8 @@ export default function LandingPage({
             {/* Brand Narrative */}
             <div className="lg:col-span-2 space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#035E7B] to-[#0D8AB0] flex items-center justify-center text-white">
-                  <Building2 className="w-5 h-5" />
+                <div className="w-11 h-11 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0 shadow-xs">
+                  <img src="/images/logo.png" alt="KirayaSaathi Logo" className="w-full h-full object-contain" />
                 </div>
                 <span className="text-2xl font-bold tracking-tight text-white font-display">
                   KirayaSaathi

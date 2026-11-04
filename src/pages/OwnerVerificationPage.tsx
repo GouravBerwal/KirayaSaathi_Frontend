@@ -160,8 +160,8 @@ export default function OwnerVerificationPage({
       {/* Top Navbar */}
       <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#035E7B]/10 text-[#035E7B] flex items-center justify-center font-bold text-xl">
-            K
+          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shrink-0 shadow-xs">
+            <img src="/images/logo.png" alt="KirayaSaathi Logo" className="w-full h-full object-contain" />
           </div>
           <div>
             <h1 className="font-extrabold text-[#035E7B] text-lg tracking-tight">KirayaSaathi</h1>

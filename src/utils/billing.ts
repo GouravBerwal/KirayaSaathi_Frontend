@@ -1,5 +1,5 @@
 /**
- * Billing and statistics utilities for KirayaSetu
+ * Billing and statistics utilities for KirayaSaathi
  */
 
 export function calculateElectricityBill(

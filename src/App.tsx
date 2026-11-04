@@ -213,9 +213,9 @@ type ApiNotification = {
   created_at?: string;
 };
 
-const READ_NOTIFS_STORAGE_KEY = 'kirayasetu_read_notifications_v1';
-const DISMISSED_NOTIFS_STORAGE_KEY = 'kirayasetu_dismissed_notifications_v1';
-const LOCAL_PAYMENTS_CACHE_KEY = 'kirayasetu_auto_tracked_payments_v1';
+const READ_NOTIFS_STORAGE_KEY = 'kirayasaathi_read_notifications_v1';
+const DISMISSED_NOTIFS_STORAGE_KEY = 'kirayasaathi_dismissed_notifications_v1';
+const LOCAL_PAYMENTS_CACHE_KEY = 'kirayasaathi_auto_tracked_payments_v1';
 
 function getStoredIdSet(key: string): Set<string> {
   try {
@@ -2456,9 +2456,12 @@ function AppContent() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#EAF4F7] text-[#142D3B]">
         <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#035E7B] border-r-transparent align-[-0.125em]" />
-          <h1 className="mt-4 text-2xl font-bold text-[#035E7B]">KirayaSetu</h1>
-          <p className="mt-2 text-sm text-gray-600">Checking your session...</p>
+          <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200/80 p-2.5 mx-auto mb-4 shadow-sm">
+            <img src="/images/logo.png" alt="KirayaSaathi Logo" className="w-full h-full object-contain" />
+          </div>
+          <div className="inline-block h-6 w-6 animate-spin rounded-full border-3 border-solid border-[#035E7B] border-r-transparent align-[-0.125em]" />
+          <h1 className="mt-3 text-2xl font-bold text-[#035E7B]">KirayaSaathi</h1>
+          <p className="mt-1 text-sm text-gray-600">Checking your session...</p>
         </div>
       </div>
     );
@@ -2534,9 +2537,12 @@ function AppContent() {
       return (
         <div className="flex min-h-screen items-center justify-center bg-[#EAF4F7] text-[#142D3B]">
           <div className="text-center">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#035E7B] border-r-transparent align-[-0.125em]" />
-            <h1 className="mt-4 text-xl font-bold text-[#035E7B]">KirayaSetu</h1>
-            <p className="mt-2 text-sm text-gray-600">Verifying account authorization...</p>
+            <div className="w-16 h-16 rounded-2xl bg-white border border-slate-200/80 p-2.5 mx-auto mb-4 shadow-sm">
+              <img src="/images/logo.png" alt="KirayaSaathi Logo" className="w-full h-full object-contain" />
+            </div>
+            <div className="inline-block h-6 w-6 animate-spin rounded-full border-3 border-solid border-[#035E7B] border-r-transparent align-[-0.125em]" />
+            <h1 className="mt-3 text-xl font-bold text-[#035E7B]">KirayaSaathi</h1>
+            <p className="mt-1 text-sm text-gray-600">Verifying account authorization...</p>
           </div>
         </div>
       );
@@ -2591,7 +2597,7 @@ function AppContent() {
       case 'settings':
         return 'Settings';
       default:
-        return 'KirayaSetu';
+        return 'KirayaSaathi';
     }
   };
 
