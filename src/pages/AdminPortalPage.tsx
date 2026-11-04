@@ -425,7 +425,7 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
           ? `"${blog.title}" is now unhidden and visible on the public blog page!`
           : `"${blog.title}" has been hidden from the public blog page.`,
       });
-      setBlogs((prev) =>
+      setAdminBlogs((prev) =>
         prev.map((b) => (b.id === blog.id ? { ...b, is_published: nextState } : b))
       );
     } catch (err: unknown) {
