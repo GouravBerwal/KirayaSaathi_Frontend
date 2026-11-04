@@ -34,6 +34,7 @@ interface RegisterResponse {
   masked_email: string;
   cooldown_seconds: number;
   expires_in_minutes: number;
+  fallback_otp?: string;
 }
 
 interface ResendOtpResponse {
@@ -42,6 +43,7 @@ interface ResendOtpResponse {
   masked_email?: string;
   cooldown_seconds: number;
   expires_in_minutes?: number;
+  fallback_otp?: string;
 }
 
 interface VerifyOtpResponse {
@@ -215,8 +217,13 @@ export default function LoginPage({
         }
         setMaskedEmail(res.masked_email || validEmail);
         setCooldown(res.cooldown_seconds || 30);
-        setOtpDigits(["", "", "", "", "", ""]);
-        setSuccess("Verification code sent to your email! Please check your inbox.");
+        if (res.fallback_otp && res.fallback_otp.length === 6) {
+          setOtpDigits(res.fallback_otp.split(""));
+          setSuccess(`Account ready! Verification code: ${res.fallback_otp}`);
+        } else {
+          setOtpDigits(["", "", "", "", "", ""]);
+          setSuccess("Verification code sent to your email! Please check your inbox.");
+        }
         setMode("otp_verification");
       } else if (mode === "login") {
         const res = await apiRequest<{
@@ -250,11 +257,17 @@ export default function LoginPage({
           setMode("otp_verification");
           return;
         }
-        setError(err.message);
+        if (err.message && err.message.toLowerCase().includes("invalid username/email or password")) {
+          setError("Invalid username/email or password. Agar aapne is server par abhi account nahi banaya hai, toh kripya pehle neeche 'Create Account' par click karein.");
+        } else {
+          setError(err.message);
+        }
       } else if (err instanceof Error) {
         const rawMsg = err.message || "";
         if (rawMsg.toLowerCase().includes("load failed") || rawMsg.toLowerCase().includes("failed to fetch")) {
           setError("Server se connect ho raha hai... Kripya 5 second baad dobara Sign In dabayein.");
+        } else if (rawMsg.toLowerCase().includes("invalid username/email or password")) {
+          setError("Invalid username/email or password. Agar aapne is server par abhi account nahi banaya hai, toh kripya pehle neeche 'Create Account' par click karein.");
         } else {
           setError(err.message);
         }
@@ -343,8 +356,13 @@ export default function LoginPage({
       });
 
       setCooldown(res.cooldown_seconds || 30);
-      setResendNotice("Naya 6-digit OTP code aapke email inbox par bhej diya gaya hai!");
-      setOtpDigits(["", "", "", "", "", ""]);
+      if (res.fallback_otp && res.fallback_otp.length === 6) {
+        setOtpDigits(res.fallback_otp.split(""));
+        setResendNotice(`Naya OTP code: ${res.fallback_otp} (Auto-filled)`);
+      } else {
+        setResendNotice("Naya 6-digit OTP code aapke email inbox par bhej diya gaya hai!");
+        setOtpDigits(["", "", "", "", "", ""]);
+      }
       otpInputRefs.current[0]?.focus();
     } catch (err: unknown) {
       if (err instanceof ApiError) {
