@@ -3,6 +3,12 @@ User-agent: *
 Allow: /
 Allow: /login
 Allow: /signup
+Allow: /favicon.ico
+Allow: /favicon*.png
+Allow: /apple-touch-icon*.png
+Allow: /site.webmanifest
+Allow: /manifest.json
+Allow: /images/
 Disallow: /dashboard
 Disallow: /admin-portal
 Disallow: /properties
@@ -11,5 +17,11 @@ Disallow: /rooms
 Disallow: /invoices
 Disallow: /reports
 Disallow: /settings
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-Favicon
+Allow: /
 
 Sitemap: https://www.kirayasaathi.app/sitemap.xml
