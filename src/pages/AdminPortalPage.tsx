@@ -429,9 +429,10 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
         prev.map((b) => (b.id === blog.id ? { ...b, is_published: nextState } : b))
       );
     } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : (err as any)?.message || "Failed to update blog visibility status.";
       setStatusNotice({
         type: "error",
-        message: err instanceof ApiError ? err.message : "Failed to update blog visibility status.",
+        message: errMsg,
       });
     }
   }
