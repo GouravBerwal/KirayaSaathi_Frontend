@@ -553,14 +553,15 @@ function AppContent() {
 
   const refreshCurrentUserProfile = useCallback(async (): Promise<CurrentUserProfile | null> => {
     try {
-      const data = await apiRequest<CurrentUserProfile>('/api/auth/me/');
-      setCurrentUserProfile(data);
-      if (data) {
+      const data = await apiRequest<CurrentUserProfile & { authenticated?: boolean }>('/api/auth/me/');
+      if (data && data.authenticated !== false && data.id) {
+        setCurrentUserProfile(data);
         setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
+        return data;
       }
-      return data;
+      setIsAuthenticated(false);
+      setCurrentUserProfile(null);
+      return null;
     } catch {
       setIsAuthenticated(false);
       setCurrentUserProfile(null);
