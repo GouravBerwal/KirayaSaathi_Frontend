@@ -263,6 +263,9 @@ export default function LandingPage({
               <a href="#pricing" className="px-1.5 xl:px-2 py-1 rounded-lg hover:text-[#035E7B] hover:bg-[#EAF4F7]/60 transition-colors whitespace-nowrap">
                 Pricing
               </a>
+              <a href="/blog" className="px-1.5 xl:px-2 py-1 rounded-lg text-[#035E7B] font-bold hover:bg-[#EAF4F7]/60 transition-colors whitespace-nowrap">
+                Blog
+              </a>
               <a href="#faq" className="px-1.5 xl:px-2 py-1 rounded-lg hover:text-[#035E7B] hover:bg-[#EAF4F7]/60 transition-colors whitespace-nowrap">
                 FAQ
               </a>
@@ -378,6 +381,7 @@ export default function LandingPage({
                   { href: '#features', label: 'Features', desc: 'Smart Rent, Meters & Split' },
                   { href: '#how', label: 'How It Works', desc: '3-Step Automation' },
                   { href: '#pricing', label: 'Pricing Plans', desc: 'Simple & Transparent' },
+                  { href: '/blog', label: 'Blog & Knowledge Hub', desc: 'Formulas, Laws & Tips' },
                   { href: '#faq', label: 'FAQ', desc: 'Common Questions' },
                   { href: '#contact', label: 'Contact & Support', desc: 'Talk to an Expert' },
                 ].map((link) => (
@@ -686,11 +690,18 @@ export default function LandingPage({
             <div className="lg:col-span-5">
               <div className="bg-gradient-to-br from-[#EAF4F7] to-white p-8 rounded-3xl border border-[#035E7B]/20 shadow-md">
                 <div className="relative w-28 h-28 rounded-2xl overflow-hidden mb-5 shadow-lg shadow-[#035E7B]/20 border-2 border-white ring-2 ring-[#035E7B]/20">
-                  <img
-                    src="/images/founder.jpg"
-                    alt="Gourav Berwal - Founder & CEO"
-                    className="w-full h-full object-cover object-top"
-                  />
+                  <picture>
+                    <source srcSet="/images/founder.webp" type="image/webp" />
+                    <img
+                      src="/images/founder.jpg"
+                      alt="Gourav Berwal - Founder & CEO of KirayaSaathi"
+                      width="112"
+                      height="112"
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </picture>
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900">Gourav Berwal</h3>
                 <div className="text-sm font-semibold text-[#035E7B] mb-4">Founder & CEO</div>
@@ -1656,11 +1667,18 @@ export default function LandingPage({
               <div className="mt-6 pt-5 border-t border-gray-200 flex items-center justify-between">
                 <div className="flex items-center gap-3.5">
                   <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md ring-2 ring-[#035E7B]/20 shrink-0">
-                    <img
-                      src="/images/testimonials/monu_gurjar.png"
-                      alt="Monu Gurjar - Hostel Owner"
-                      className="w-full h-full object-cover object-top"
-                    />
+                    <picture>
+                      <source srcSet="/images/testimonials/monu_gurjar.webp" type="image/webp" />
+                      <img
+                        src="/images/testimonials/monu_gurjar.png"
+                        alt="Monu Gurjar - Verified Hostel Owner in Indore"
+                        width="48"
+                        height="48"
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    </picture>
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900 text-base">Monu Gurjar</h4>
@@ -1844,6 +1862,8 @@ export default function LandingPage({
                 <button
                   type="button"
                   onClick={() => toggleFaq(index)}
+                  aria-expanded={openFaq === index}
+                  aria-controls={`faq-answer-${index}`}
                   className="w-full text-left px-6 py-4.5 font-bold text-gray-900 text-base sm:text-lg flex items-center justify-between gap-4"
                 >
                   <span>{faq.q}</span>
@@ -1854,7 +1874,10 @@ export default function LandingPage({
                   )}
                 </button>
                 {openFaq === index && (
-                  <div className="px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-gray-100 pt-3">
+                  <div
+                    id={`faq-answer-${index}`}
+                    className="px-6 pb-5 text-sm text-gray-600 leading-relaxed border-t border-gray-100 pt-3"
+                  >
                     {faq.a}
                   </div>
                 )}
@@ -1906,7 +1929,7 @@ export default function LandingPage({
                   </div>
                   <div>
                     <div className="text-xs font-bold text-gray-500 uppercase">Support Email</div>
-                    <a href="kirayasaathi.support@gmail.com" className="text-sm font-semibold text-[#035E7B] hover:underline mt-0.5 block">
+                    <a href="mailto:kirayasaathi.support@gmail.com" className="text-sm font-semibold text-[#035E7B] hover:underline mt-0.5 block">
                       kirayasaathi.support@gmail.com
                     </a>
                   </div>
@@ -1918,7 +1941,9 @@ export default function LandingPage({
                   </div>
                   <div>
                     <div className="text-xs font-bold text-gray-500 uppercase">Helpline</div>
-                    <div className="text-sm font-semibold text-gray-900 mt-0.5">+91 95166 37166</div>
+                    <a href="tel:+919516637166" className="text-sm font-semibold text-gray-900 hover:text-[#035E7B] transition mt-0.5 block">
+                      +91 95166 37166
+                    </a>
                   </div>
                 </div>
 
@@ -1957,28 +1982,30 @@ export default function LandingPage({
                 <form onSubmit={handleContactSubmit} className="space-y-4">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
+                      <label htmlFor="contact-name" className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
                         Full Name *
                       </label>
                       <input
+                        id="contact-name"
                         type="text"
                         required
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
-                        placeholder="Enter Your Number"
+                        placeholder="Enter your full name"
                         className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#035E7B]"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
+                      <label htmlFor="contact-email" className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
                         Email Address *
                       </label>
                       <input
+                        id="contact-email"
                         type="email"
                         required
                         value={contactEmail}
                         onChange={(e) => setContactEmail(e.target.value)}
-                        placeholder="Enter Your Email"
+                        placeholder="Enter your email"
                         className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#035E7B]"
                       />
                     </div>
@@ -1986,23 +2013,25 @@ export default function LandingPage({
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
+                      <label htmlFor="contact-phone" className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
                         Phone Number *
                       </label>
                       <input
+                        id="contact-phone"
                         type="tel"
                         required
                         value={contactPhone}
                         onChange={(e) => setContactPhone(e.target.value)}
-                        placeholder="Enter Your Number"
+                        placeholder="Enter your mobile number"
                         className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#035E7B]"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
+                      <label htmlFor="contact-property-type" className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
                         Property Type
                       </label>
                       <select
+                        id="contact-property-type"
                         value={contactPropertyType}
                         onChange={(e) => setContactPropertyType(e.target.value)}
                         className="w-full rounded-xl border border-gray-300 px-4 py-2.5 text-sm outline-none focus:border-[#035E7B] bg-white"
@@ -2018,10 +2047,11 @@ export default function LandingPage({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
+                    <label htmlFor="contact-message" className="block text-xs font-bold text-gray-700 mb-1.5 uppercase">
                       Message / Requirement
                     </label>
                     <textarea
+                      id="contact-message"
                       rows={4}
                       required
                       value={contactMessage}
@@ -2087,6 +2117,7 @@ export default function LandingPage({
                 Product
               </h5>
               <ul className="space-y-2.5 text-sm text-gray-400">
+                <li><a href="/blog" className="text-white font-bold hover:text-white transition">Blog & Knowledge Hub</a></li>
                 <li><a href="#features" className="hover:text-white transition">Features</a></li>
                 <li><a href="#pricing" className="hover:text-white transition">Pricing Plans</a></li>
                 <li><a href="#roi" className="hover:text-white transition">ROI Calculator</a></li>
@@ -2101,6 +2132,7 @@ export default function LandingPage({
                 Company
               </h5>
               <ul className="space-y-2.5 text-sm text-gray-400">
+                <li><a href="/blog" className="hover:text-white transition">Latest News</a></li>
                 <li><a href="#about" className="hover:text-white transition">About Us</a></li>
                 <li><a href="#about" className="hover:text-white transition">Founder & Vision</a></li>
                 <li><a href="#testimonials" className="hover:text-white transition">Customer Reviews</a></li>
@@ -2122,9 +2154,14 @@ export default function LandingPage({
                 </div>
               ) : (
                 <form onSubmit={handleNewsletterSubmit} className="space-y-2">
+                  <label htmlFor="newsletter-email" className="sr-only">
+                    Email address for newsletter updates
+                  </label>
                   <input
+                    id="newsletter-email"
                     type="email"
                     required
+                    aria-label="Email address for newsletter updates"
                     value={newsletterEmail}
                     onChange={(e) => setNewsletterEmail(e.target.value)}
                     placeholder="Your email address"

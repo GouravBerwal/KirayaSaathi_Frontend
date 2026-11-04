@@ -8,6 +8,8 @@ Allow: /favicon*.png
 Allow: /apple-touch-icon*.png
 Allow: /site.webmanifest
 Allow: /manifest.json
+Allow: /llms.txt
+Allow: /llms-full.txt
 Allow: /images/
 Disallow: /dashboard
 Disallow: /admin-portal

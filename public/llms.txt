@@ -1,0 +1,31 @@
+# KirayaSaathi — Smart Rental & Tenant Management Platform
+
+> KirayaSaathi (https://www.kirayasaathi.app) is India's premier smart rental property, tenant, room, electricity sub-meter, and rent invoicing platform built specifically for hostel owners, PG operators, apartment landlords, and property managers across India.
+
+KirayaSaathi solves India-specific rental management friction: multi-tenant room occupancy, complex electricity sub-meter calculations with auto-rollover, automated WhatsApp and email rent receipts, security deposit ledgers, handover check-sheets, and monthly cycle archiving with full data isolation.
+
+## Core Website Links
+- [Homepage](https://www.kirayasaathi.app/): Complete overview of KirayaSaathi's property management suite, features, live interactive demo, and customer reviews.
+- [Sign Up / Get Started Free](https://www.kirayasaathi.app/signup): Create a verified owner account with instant email OTP authentication.
+- [Owner Login](https://www.kirayasaathi.app/login): Secure access to the property owner dashboard.
+- [Blog & Resources](https://www.kirayasaathi.app/blog): In-depth guides on Indian rental laws, electricity sub-metering formulas, tenant screening, PG management best practices, and tax tips for landlords.
+
+## Key Capabilities & Features
+- **Multi-Property & Unit Hierarchy**: Manage multiple hostels, PG branches, residential flats, and commercial properties under a unified owner dashboard.
+- **Room & Bed Management**: Track individual rooms, single/double/triple sharing occupancies, maintenance states, and current vacancies in real time.
+- **Tenant Lifecycle Management**: Aadhaar and ID verification storage, digital move-in checklists, security deposit tracking, and tenant history.
+- **Smart Electricity Sub-Meter Billing**: Automatically compute electricity bills based on previous and current meter readings, unit rates, and automated meter rollover handling.
+- **Instant Rent Receipts & Invoices**: Generate compliant PDF rent invoices and rent receipts with one click for tax and HRA exemption claims.
+- **Payment Reconciliation**: Track cash, UPI, bank transfers, partial payments, and overdue amounts with automated reminders.
+- **Security & Data Privacy**: Database-level tenant isolation, encrypted sessions, strict role-based access, and SSL encryption.
+
+## Target Audience
+- Property Owners and Landlords managing residential apartments or independent houses.
+- Hostel and Paying Guest (PG) Operators managing shared rooms and mess facilities.
+- Commercial Real Estate Managers tracking shops, offices, and utility sub-meters.
+
+## Contact & Developer Information
+- Website: https://www.kirayasaathi.app
+- API Base: https://api.kirayasaathi.app
+- Support Email: kirayasaathi.support@gmail.com
+- Location: Indore, Madhya Pradesh, India

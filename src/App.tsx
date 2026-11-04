@@ -8,8 +8,8 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { apiRequest, asArray, ApiError } from './utils/api';
-import LoginPage from './pages/LoginPage';
 import LandingPage from './pages/LandingPage';
+import type { CurrentUserProfile } from './pages/OwnerVerificationPage';
 
 import {
   PageType,
@@ -31,28 +31,75 @@ import { Topbar } from './components/Topbar';
 import { SearchModal } from './components/SearchModal';
 import { RecordPaymentModal } from './components/RecordPaymentModal';
 
-import { DashboardPage } from './pages/DashboardPage';
-import { PropertyList } from './pages/PropertyList';
-import { PropertyFilter } from './pages/PropertyFilter';
-import { PropertyDetail } from './pages/PropertyDetail';
-import { AddProperty } from './pages/AddProperty';
-import EditProperty from './pages/EditProperty';
+// Code-split dynamic page imports for optimal bundle size & Lighthouse 95-100 Performance
+const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const BlogListPage = React.lazy(() => import('./pages/BlogListPage'));
+const BlogPostDetailPage = React.lazy(() => import('./pages/BlogPostDetailPage'));
+const AdminPortalPage = React.lazy(() => import('./pages/AdminPortalPage'));
+const OwnerVerificationPage = React.lazy(() => import('./pages/OwnerVerificationPage'));
+const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
+const EditProperty = React.lazy(() => import('./pages/EditProperty'));
+const AddTenantPage = React.lazy(() => import('./pages/AddTenantPage'));
 
-import { RoomsPage } from './pages/RoomsPage';
-import { AddRoom } from './pages/AddRoom';
-import { TenantsPage } from './pages/TenantsPage';
-import AddTenantPage from './pages/AddTenantPage';
-import { TenantProfile } from './pages/TenantProfile';
-import { TenantDetail } from './pages/TenantDetail';
-import { SecurityDepositsPage } from './pages/SecurityDepositsPage';
-import { RentManagement } from './pages/RentManagement';
-import { ElectricityBills } from './pages/ElectricityBills';
-import { InvoiceList } from './pages/InvoiceList';
-import { ReportsPage } from './pages/ReportsPage';
-import { NotificationsPage } from './pages/NotificationsPage';
-import SettingsPage from './pages/SettingsPage';
-import OwnerVerificationPage, { CurrentUserProfile } from './pages/OwnerVerificationPage';
-import AdminPortalPage from './pages/AdminPortalPage';
+const DashboardPage = React.lazy(() =>
+  import('./pages/DashboardPage').then((m) => ({ default: m.DashboardPage }))
+);
+const PropertyList = React.lazy(() =>
+  import('./pages/PropertyList').then((m) => ({ default: m.PropertyList }))
+);
+const PropertyFilter = React.lazy(() =>
+  import('./pages/PropertyFilter').then((m) => ({ default: m.PropertyFilter }))
+);
+const PropertyDetail = React.lazy(() =>
+  import('./pages/PropertyDetail').then((m) => ({ default: m.PropertyDetail }))
+);
+const AddProperty = React.lazy(() =>
+  import('./pages/AddProperty').then((m) => ({ default: m.AddProperty }))
+);
+const RoomsPage = React.lazy(() =>
+  import('./pages/RoomsPage').then((m) => ({ default: m.RoomsPage }))
+);
+const AddRoom = React.lazy(() =>
+  import('./pages/AddRoom').then((m) => ({ default: m.AddRoom }))
+);
+const TenantsPage = React.lazy(() =>
+  import('./pages/TenantsPage').then((m) => ({ default: m.TenantsPage }))
+);
+const TenantProfile = React.lazy(() =>
+  import('./pages/TenantProfile').then((m) => ({ default: m.TenantProfile }))
+);
+const TenantDetail = React.lazy(() =>
+  import('./pages/TenantDetail').then((m) => ({ default: m.TenantDetail }))
+);
+const SecurityDepositsPage = React.lazy(() =>
+  import('./pages/SecurityDepositsPage').then((m) => ({ default: m.SecurityDepositsPage }))
+);
+const RentManagement = React.lazy(() =>
+  import('./pages/RentManagement').then((m) => ({ default: m.RentManagement }))
+);
+const ElectricityBills = React.lazy(() =>
+  import('./pages/ElectricityBills').then((m) => ({ default: m.ElectricityBills }))
+);
+const InvoiceList = React.lazy(() =>
+  import('./pages/InvoiceList').then((m) => ({ default: m.InvoiceList }))
+);
+const ReportsPage = React.lazy(() =>
+  import('./pages/ReportsPage').then((m) => ({ default: m.ReportsPage }))
+);
+const NotificationsPage = React.lazy(() =>
+  import('./pages/NotificationsPage').then((m) => ({ default: m.NotificationsPage }))
+);
+
+function PageLoadingFallback() {
+  return (
+    <div className="flex min-h-[50vh] items-center justify-center p-8">
+      <div className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white border border-slate-200/80 shadow-sm text-sm font-semibold text-[#035E7B]">
+        <span className="w-4 h-4 border-2 border-[#035E7B] border-t-transparent rounded-full animate-spin" />
+        <span>Loading...</span>
+      </div>
+    </div>
+  );
+}
 
 type ApiProperty = {
   id: number;
@@ -2441,15 +2488,17 @@ function AppContent() {
 
   if (isAdminPortal) {
     return (
-      <AdminPortalPage
-        onExit={() => {
-          if (window.location.hash.toLowerCase().includes('admin')) {
-            window.location.hash = '';
-          }
-          setIsAdminPortal(false);
-          navigate(isAuthenticated ? '/dashboard' : '/');
-        }}
-      />
+      <React.Suspense fallback={<PageLoadingFallback />}>
+        <AdminPortalPage
+          onExit={() => {
+            if (window.location.hash.toLowerCase().includes('admin')) {
+              window.location.hash = '';
+            }
+            setIsAdminPortal(false);
+            navigate(isAuthenticated ? '/dashboard' : '/');
+          }}
+        />
+      </React.Suspense>
     );
   }
 
@@ -2470,57 +2519,92 @@ function AppContent() {
 
   if (!isAuthenticated) {
     return (
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <LoginPage
-              initialMode="login"
-              onLoginSuccess={handleLoginSuccess}
-              onBackToLanding={() => navigate('/')}
-              onOpenAdminPortal={() => {
-                navigate('/admin-portal');
-                setIsAdminPortal(true);
-              }}
-            />
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <LoginPage
-              initialMode="signup"
-              onLoginSuccess={handleLoginSuccess}
-              onBackToLanding={() => navigate('/')}
-              onOpenAdminPortal={() => {
-                navigate('/admin-portal');
-                setIsAdminPortal(true);
-              }}
-            />
-          }
-        />
-        <Route
-          path="*"
-          element={
-            <LandingPage
-              onLogin={() => {
-                setAuthInitialMode('login');
-                navigate('/login');
-              }}
-              onSignup={() => {
-                setAuthInitialMode('signup');
-                navigate('/signup');
-              }}
-              onOpenAdminPortal={() => {
-                navigate('/admin-portal');
-                setIsAdminPortal(true);
-              }}
-              isAuthenticated={false}
-              currentUser={null}
-            />
-          }
-        />
-      </Routes>
+      <React.Suspense fallback={<PageLoadingFallback />}>
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              <LoginPage
+                initialMode="login"
+                onLoginSuccess={handleLoginSuccess}
+                onBackToLanding={() => navigate('/')}
+                onOpenAdminPortal={() => {
+                  navigate('/admin-portal');
+                  setIsAdminPortal(true);
+                }}
+              />
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <LoginPage
+                initialMode="signup"
+                onLoginSuccess={handleLoginSuccess}
+                onBackToLanding={() => navigate('/')}
+                onOpenAdminPortal={() => {
+                  navigate('/admin-portal');
+                  setIsAdminPortal(true);
+                }}
+              />
+            }
+          />
+          <Route
+            path="/blog"
+            element={
+              <BlogListPage
+                onBackToLanding={() => navigate('/')}
+                onLogin={() => {
+                  setAuthInitialMode('login');
+                  navigate('/login');
+                }}
+                isAuthenticated={false}
+              />
+            }
+          />
+          <Route
+            path="/blog/:slug"
+            element={
+              <BlogPostDetailPage
+                onBackToLanding={() => navigate('/')}
+                isAuthenticated={false}
+              />
+            }
+          />
+          <Route
+            path="/admin-portal"
+            element={
+              <AdminPortalPage
+                onExit={() => {
+                  setIsAdminPortal(false);
+                  navigate('/');
+                }}
+              />
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <LandingPage
+                onLogin={() => {
+                  setAuthInitialMode('login');
+                  navigate('/login');
+                }}
+                onSignup={() => {
+                  setAuthInitialMode('signup');
+                  navigate('/signup');
+                }}
+                onOpenAdminPortal={() => {
+                  navigate('/admin-portal');
+                  setIsAdminPortal(true);
+                }}
+                isAuthenticated={false}
+                currentUser={null}
+              />
+            }
+          />
+        </Routes>
+      </React.Suspense>
     );
   }
 
@@ -2669,10 +2753,47 @@ function AppContent() {
         )}
 
         <main className="flex-1 overflow-y-auto p-3 sm:p-6 md:p-8 print:p-0 print:m-0 print:overflow-visible">
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/login" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
+          <React.Suspense fallback={<PageLoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/signup" element={<Navigate to="/dashboard" replace />} />
+
+              <Route
+                path="/blog"
+                element={
+                  <div className="-m-3 sm:-m-6 md:-m-8">
+                    <BlogListPage
+                      onBackToLanding={() => navigate('/')}
+                      onOpenDashboard={() => handleNavigate('dashboard')}
+                      isAuthenticated={isAuthenticated}
+                    />
+                  </div>
+                }
+              />
+              <Route
+                path="/blog/:slug"
+                element={
+                  <div className="-m-3 sm:-m-6 md:-m-8">
+                    <BlogPostDetailPage
+                      onBackToLanding={() => navigate('/')}
+                      onOpenDashboard={() => handleNavigate('dashboard')}
+                      isAuthenticated={isAuthenticated}
+                    />
+                  </div>
+                }
+              />
+              <Route
+                path="/admin-portal"
+                element={
+                  <AdminPortalPage
+                    onExit={() => {
+                      setIsAdminPortal(false);
+                      navigate('/dashboard');
+                    }}
+                  />
+                }
+              />
 
             <Route
               path="/welcome"
@@ -3034,7 +3155,8 @@ function AppContent() {
 
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
-        </main>
+        </React.Suspense>
+      </main>
       </div>
 
       <SearchModal

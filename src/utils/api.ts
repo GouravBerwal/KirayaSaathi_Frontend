@@ -117,7 +117,7 @@ export async function apiRequest<T>(
   }
 
   // Automatically attach isolated Admin Token for admin endpoints, or Owner Token for user endpoints
-  if (endpoint.startsWith("/api/admin/")) {
+  if (endpoint.startsWith("/api/admin/") || endpoint.includes("/admin/")) {
     const adminToken =
       typeof sessionStorage !== "undefined"
         ? sessionStorage.getItem("kiraya_admin_token")

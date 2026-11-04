@@ -1,0 +1,55 @@
+# KirayaSaathi — Comprehensive Platform Documentation for AI Agents & Search Engines
+
+> Complete technical and operational specification for KirayaSaathi (https://www.kirayasaathi.app), the smart property management SaaS platform designed for property owners, hostels, and PGs in India.
+
+## 1. Overview
+KirayaSaathi is a full-stack, cloud-hosted SaaS platform engineered to eliminate paper registers, Excel sheets, and manual calculation errors in property and rental management. 
+
+### Why Landlords Choose KirayaSaathi:
+1. **Zero Math Calculation**: Rent, electricity unit usage, and previous balance rollovers calculate automatically.
+2. **Eliminates Tenant Disputes**: Every invoice provides exact meter photos/readings and itemized deductions.
+3. **Data Isolation**: Multi-tenant database design ensures 100% privacy between independent landlords.
+4. **Mobile First**: Fully responsive web application optimized for smartphones, tablets, and desktop displays.
+
+## 2. Technical Stack
+- **Frontend**: React 18, TypeScript, Tailwind CSS, Vite, Lucide Icons, html2canvas.
+- **Backend API**: Python 3.10+, Django 5.x, Django REST Framework, Gunicorn, Nginx.
+- **Database**: MySQL 8.0 on Google Cloud Platform with daily automated snapshots.
+- **Hosting**: Distributed CDN on Vercel (Frontend edge nodes) and GCP Compute Engine (Backend API at api.kirayasaathi.app).
+- **Security**: HTTPS/TLS 1.3 via Let's Encrypt, CSRF protection, secure cookie handling, and token-based admin authorization.
+
+## 3. Core Modules
+
+### 3.1 Properties & Units
+- Hierarchical property profiles (Hostel, PG, Apartment Building, Independent House, Commercial Complex).
+- Configurable defaults per property: standard rent due date, default electricity unit rate (₹/kWh), standard security deposit amount.
+
+### 3.2 Rooms & Occupancy
+- Single, Double, Triple, Four-sharing, and Dormitory allocations.
+- Real-time status indicators: Vacant, Occupied, Under Maintenance.
+- Occupant slot mapping with direct link to active tenant records.
+
+### 3.3 Electricity Sub-Meter Automation
+- Supports mechanical and digital sub-meters.
+- Automatically calculates consumption: `(Current Reading - Previous Reading) * Rate Per Unit`.
+- Rollover handling: Automatically detects meter rollovers (e.g. 9999 to 0001) without generating negative or erroneous bills.
+
+### 3.4 Invoicing & Receipts
+- Professional PDF invoice generation compliant with Indian rental conventions.
+- Displays landlord GST (if applicable), PAN, property address, and tenant details.
+- Suitable for salaried tenants claiming House Rent Allowance (HRA) under Income Tax Act Section 10(13A).
+
+## 4. Frequently Asked Questions (FAQs)
+**Q: Is KirayaSaathi free to use?**
+A: Yes, KirayaSaathi offers a comprehensive free starter tier allowing property owners to manage their rooms, tenants, and bills.
+
+**Q: Can KirayaSaathi handle electricity submeters for individual rooms?**
+A: Yes, each room can have its own sub-meter. The system logs previous readings and generates monthly electricity bills with one click.
+
+**Q: Where is data stored?**
+A: All data is stored in high-availability MySQL databases on Google Cloud Platform with end-to-end encryption.
+
+## 5. Contact & Support
+- Email: kirayasaathi.support@gmail.com
+- Domain: https://www.kirayasaathi.app
+- API Domain: https://api.kirayasaathi.app

@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent, type ChangeEvent } from "react";
 import {
   ShieldCheck,
   Building,
@@ -20,6 +20,15 @@ import {
   Filter,
   Check,
   X,
+  BookOpen,
+  Plus,
+  Trash2,
+  Edit3,
+  Image as ImageIcon,
+  UploadCloud,
+  Globe,
+  Tag,
+  Sparkles,
 } from "lucide-react";
 import { apiRequest, ApiError, API_BASE_URL } from "../utils/api";
 
@@ -77,12 +86,31 @@ interface AuditLogItem {
   created_at: string;
 }
 
+interface AdminBlogItem {
+  id: number;
+  title: string;
+  slug: string;
+  category: string;
+  excerpt: string;
+  content: string;
+  cover_image: string;
+  author_name: string;
+  author_role: string;
+  read_time: string;
+  tags: string;
+  is_published: boolean;
+  is_featured: boolean;
+  views_count: number;
+  created_at: string;
+  formatted_date?: string;
+}
+
 interface AdminPortalPageProps {
   onExit?: () => void;
 }
 
 export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
-  const [activeTab, setActiveTab] = useState<"requests" | "owners" | "audit">("requests");
+  const [activeTab, setActiveTab] = useState<"requests" | "owners" | "audit" | "blogs">("requests");
 
   // Authentication check for admin
   const [isAdminUser, setIsAdminUser] = useState<boolean | null>(null);
@@ -98,6 +126,7 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
   const [requests, setRequests] = useState<VerificationRequestItem[]>([]);
   const [owners, setOwners] = useState<OwnerItem[]>([]);
   const [auditLogs, setAuditLogs] = useState<AuditLogItem[]>([]);
+  const [adminBlogs, setAdminBlogs] = useState<AdminBlogItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // Requests filters
@@ -110,6 +139,30 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
 
   // Audit filters
   const [auditSearchQuery, setAuditSearchQuery] = useState<string>("");
+
+  // Blog Management Filters & Form State
+  const [blogSearchQuery, setBlogSearchQuery] = useState("");
+  const [blogCategoryFilter, setBlogCategoryFilter] = useState("ALL");
+  const [blogModalOpen, setBlogModalOpen] = useState(false);
+  const [blogModalMode, setBlogModalMode] = useState<"create" | "edit">("create");
+  const [editingBlogId, setEditingBlogId] = useState<number | null>(null);
+  const [blogForm, setBlogForm] = useState({
+    title: "",
+    slug: "",
+    category: "Tenant Management",
+    excerpt: "",
+    content: "",
+    cover_image: "",
+    author_name: "KirayaSaathi Editorial Team",
+    author_role: "Real Estate & Rental Specialist",
+    read_time: "5 min read",
+    tags: "",
+    is_featured: false,
+    is_published: true,
+  });
+  const [blogSaving, setBlogSaving] = useState(false);
+  const [blogImageUploading, setBlogImageUploading] = useState(false);
+  const [blogFormError, setBlogFormError] = useState("");
 
   // Global notice banner
   const [statusNotice, setStatusNotice] = useState<{
@@ -214,14 +267,16 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
   async function loadAdminData() {
     setIsLoading(true);
     try {
-      const [reqs, owns, logs] = await Promise.all([
+      const [reqs, owns, logs, blogs] = await Promise.all([
         apiRequest<VerificationRequestItem[]>("/api/admin/verification-requests/"),
         apiRequest<OwnerItem[]>("/api/admin/owners/"),
         apiRequest<AuditLogItem[]>("/api/admin/audit-logs/"),
+        apiRequest<AdminBlogItem[]>("/api/admin/blogs/").catch(() => []),
       ]);
       setRequests(Array.isArray(reqs) ? reqs : []);
       setOwners(Array.isArray(owns) ? owns : []);
       setAuditLogs(Array.isArray(logs) ? logs : []);
+      setAdminBlogs(Array.isArray(blogs) ? blogs : []);
     } catch (e) {
       console.error("Failed to load admin portal data", e);
       setStatusNotice({
@@ -230,6 +285,152 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
       });
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  // =========================================================================
+  // BLOG MANAGEMENT HANDLERS
+  // =========================================================================
+
+  function openCreateBlogModal() {
+    setBlogModalMode("create");
+    setEditingBlogId(null);
+    setBlogFormError("");
+    setBlogForm({
+      title: "",
+      slug: "",
+      category: "Tenant Management",
+      excerpt: "",
+      content: "<h2>Introduction</h2>\n<p>Write your article introduction here...</p>\n\n<h2>Key Guidelines</h2>\n<ul>\n  <li>Guideline point 1</li>\n  <li>Guideline point 2</li>\n</ul>",
+      cover_image: "",
+      author_name: "KirayaSaathi Editorial Team",
+      author_role: "Real Estate & Rental Specialist",
+      read_time: "5 min read",
+      tags: "Rental, Tenant, PG, India",
+      is_featured: false,
+      is_published: true,
+    });
+    setBlogModalOpen(true);
+  }
+
+  function openEditBlogModal(blog: AdminBlogItem) {
+    setBlogModalMode("edit");
+    setEditingBlogId(blog.id);
+    setBlogFormError("");
+    setBlogForm({
+      title: blog.title,
+      slug: blog.slug,
+      category: blog.category,
+      excerpt: blog.excerpt,
+      content: blog.content,
+      cover_image: blog.cover_image,
+      author_name: blog.author_name,
+      author_role: blog.author_role,
+      read_time: blog.read_time,
+      tags: blog.tags || "",
+      is_featured: blog.is_featured,
+      is_published: blog.is_published,
+    });
+    setBlogModalOpen(true);
+  }
+
+  async function handleSaveBlog(e: FormEvent) {
+    e.preventDefault();
+    setBlogFormError("");
+    if (!blogForm.title.trim()) {
+      setBlogFormError("Article title is required.");
+      return;
+    }
+    if (!blogForm.excerpt.trim()) {
+      setBlogFormError("Short summary / excerpt is required for search previews.");
+      return;
+    }
+    if (!blogForm.content.trim()) {
+      setBlogFormError("Article content cannot be empty.");
+      return;
+    }
+
+    setBlogSaving(true);
+    try {
+      if (blogModalMode === "create") {
+        await apiRequest("/api/admin/blogs/", {
+          method: "POST",
+          body: blogForm,
+        });
+        setStatusNotice({
+          type: "success",
+          message: `Blog article "${blogForm.title}" published successfully!`,
+        });
+      } else if (editingBlogId) {
+        await apiRequest(`/api/admin/blogs/${editingBlogId}/`, {
+          method: "PUT",
+          body: blogForm,
+        });
+        setStatusNotice({
+          type: "success",
+          message: `Blog article "${blogForm.title}" updated successfully!`,
+        });
+      }
+      setBlogModalOpen(false);
+      await loadAdminData();
+    } catch (err: unknown) {
+      if (err instanceof ApiError) {
+        setBlogFormError(err.message);
+      } else {
+        setBlogFormError("Failed to save blog post. Please check fields and try again.");
+      }
+    } finally {
+      setBlogSaving(false);
+    }
+  }
+
+  async function handleDeleteBlog(id: number, title: string) {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to permanently delete "${title}"? This cannot be undone.`
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await apiRequest(`/api/admin/blogs/${id}/`, {
+        method: "DELETE",
+      });
+      setStatusNotice({
+        type: "success",
+        message: `Blog article "${title}" deleted successfully.`,
+      });
+      await loadAdminData();
+    } catch (err: unknown) {
+      setStatusNotice({
+        type: "error",
+        message: err instanceof ApiError ? err.message : "Failed to delete blog article.",
+      });
+    }
+  }
+
+  async function handleBlogImageUpload(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    setBlogImageUploading(true);
+    setBlogFormError("");
+    try {
+      const res = await apiRequest<{ url: string }>("/api/admin/blogs/upload-image/", {
+        method: "POST",
+        body: formData,
+      });
+      if (res && res.url) {
+        const fullUrl = res.url.startsWith("http") ? res.url : `${API_BASE_URL}${res.url}`;
+        setBlogForm((prev) => ({ ...prev, cover_image: fullUrl }));
+      }
+    } catch (err: unknown) {
+      setBlogFormError(
+        err instanceof ApiError ? err.message : "Failed to upload image. Please try again."
+      );
+    } finally {
+      setBlogImageUploading(false);
     }
   }
 
@@ -475,6 +676,22 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
     );
   });
 
+  const filteredBlogs = adminBlogs.filter((b) => {
+    if (blogCategoryFilter !== "ALL" && b.category.toLowerCase() !== blogCategoryFilter.toLowerCase()) {
+      return false;
+    }
+    if (blogSearchQuery.trim()) {
+      const q = blogSearchQuery.toLowerCase();
+      return (
+        b.title.toLowerCase().includes(q) ||
+        b.excerpt.toLowerCase().includes(q) ||
+        b.category.toLowerCase().includes(q) ||
+        b.author_name.toLowerCase().includes(q)
+      );
+    }
+    return true;
+  });
+
   return (
     <div className="min-h-screen bg-[#0F172A] text-slate-100 flex flex-col font-sans">
       {/* Top Navbar */}
@@ -571,6 +788,19 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
         >
           <Clock className="w-4 h-4" />
           <span>Audit Trail ({auditLogs.length})</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setActiveTab("blogs")}
+          className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap shrink-0 ${
+            activeTab === "blogs"
+              ? "bg-amber-500 text-slate-950 shadow-md"
+              : "text-slate-400 hover:text-white hover:bg-slate-800"
+          }`}
+        >
+          <BookOpen className="w-4 h-4" />
+          <span>Blog Manager ({adminBlogs.length})</span>
         </button>
 
         <button
@@ -1250,6 +1480,191 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
             </div>
           </div>
         )}
+
+        {/* ============================================================== */}
+        {/* TAB 4: BLOG MANAGER                                            */}
+        {/* ============================================================== */}
+        {activeTab === "blogs" && (
+          <div className="space-y-6">
+            {/* Header Toolbar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#1E293B] p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-sm">
+              <div>
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-amber-400" />
+                  <span>Public Blog & SEO Editorial Manager</span>
+                </h2>
+                <p className="text-xs text-slate-400 mt-1">
+                  Create and manage SEO-optimized rental guides, utility formulas, and property articles that drive Google & AI search traffic.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3 shrink-0">
+                <a
+                  href="/blog"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700 transition inline-flex items-center gap-1.5"
+                >
+                  <Globe className="w-3.5 h-3.5 text-[#035E7B]" />
+                  <span>View Public Blog</span>
+                  <ExternalLink className="w-3 h-3 text-slate-400" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={openCreateBlogModal}
+                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold shadow-md transition inline-flex items-center gap-1.5"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Create New Blog Post</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Filter & Search Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-[#1E293B]/60 p-3 rounded-xl border border-slate-800">
+              <div className="relative flex-1 min-w-[200px] max-w-md">
+                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  value={blogSearchQuery}
+                  onChange={(e) => setBlogSearchQuery(e.target.value)}
+                  placeholder="Search articles by title, excerpt, author..."
+                  className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-500 outline-none focus:border-amber-500"
+                />
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-400 font-semibold">Category:</span>
+                <select
+                  value={blogCategoryFilter}
+                  onChange={(e) => setBlogCategoryFilter(e.target.value)}
+                  className="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-lg px-2.5 py-1.5 outline-none focus:border-amber-500"
+                >
+                  <option value="ALL">All Categories</option>
+                  <option value="Tenant Management">Tenant Management</option>
+                  <option value="Electricity Submetering">Electricity Submetering</option>
+                  <option value="Rent Laws & Agreements">Rent Laws & Agreements</option>
+                  <option value="PG & Hostel Guide">PG & Hostel Guide</option>
+                  <option value="Property Investment">Property Investment</option>
+                  <option value="General Tips">General Tips</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Blogs Table / List */}
+            <div className="bg-[#1E293B] rounded-2xl overflow-hidden border border-slate-800 shadow-sm">
+              {filteredBlogs.length === 0 ? (
+                <div className="py-12 text-center text-slate-400 space-y-3">
+                  <BookOpen className="w-10 h-10 mx-auto text-slate-600" />
+                  <p className="text-sm">No blog posts found matching your criteria.</p>
+                  <button
+                    type="button"
+                    onClick={openCreateBlogModal}
+                    className="px-3.5 py-1.5 bg-amber-500 text-slate-950 font-bold rounded-lg text-xs"
+                  >
+                    Create First Article
+                  </button>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-slate-900/90 text-slate-400 uppercase font-semibold text-[10px] tracking-wider border-b border-slate-800">
+                      <tr>
+                        <th className="py-3.5 px-4">Article</th>
+                        <th className="py-3.5 px-4">Category</th>
+                        <th className="py-3.5 px-4">Author</th>
+                        <th className="py-3.5 px-4">Views</th>
+                        <th className="py-3.5 px-4">Status</th>
+                        <th className="py-3.5 px-4">Published Date</th>
+                        <th className="py-3.5 px-4 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800 text-slate-300">
+                      {filteredBlogs.map((b) => (
+                        <tr key={b.id} className="hover:bg-slate-800/50 transition">
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-3">
+                              {b.cover_image ? (
+                                <img
+                                  src={b.cover_image}
+                                  alt={b.title}
+                                  className="w-12 h-10 object-cover rounded-lg border border-slate-700 shrink-0"
+                                />
+                              ) : (
+                                <div className="w-12 h-10 bg-slate-800 rounded-lg border border-slate-700 flex items-center justify-center shrink-0">
+                                  <ImageIcon className="w-4 h-4 text-slate-500" />
+                                </div>
+                              )}
+                              <div className="min-w-0 max-w-sm sm:max-w-md">
+                                <div className="font-bold text-white truncate text-sm">{b.title}</div>
+                                <div className="text-[11px] text-slate-400 font-mono truncate">/blog/{b.slug}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[10px] font-bold border border-slate-700">
+                              {b.category}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-slate-300 font-medium">
+                            {b.author_name}
+                          </td>
+                          <td className="py-3 px-4 font-mono font-bold text-amber-400">
+                            {b.views_count.toLocaleString()}
+                          </td>
+                          <td className="py-3 px-4">
+                            {b.is_published ? (
+                              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold flex items-center gap-1 w-fit">
+                                <CheckCircle2 className="w-3 h-3" /> Published
+                              </span>
+                            ) : (
+                              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 text-[10px] font-bold w-fit">
+                                Draft
+                              </span>
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">
+                            {b.created_at ? new Date(b.created_at).toLocaleDateString() : "—"}
+                          </td>
+                          <td className="py-3 px-4 text-right">
+                            <div className="flex items-center justify-end gap-1.5">
+                              <a
+                                href={`/blog/${b.slug}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                                title="Preview on Website"
+                              >
+                                <ExternalLink className="w-3.5 h-3.5" />
+                              </a>
+                              <button
+                                type="button"
+                                onClick={() => openEditBlogModal(b)}
+                                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 transition"
+                                title="Edit Article"
+                              >
+                                <Edit3 className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteBlog(b.id, b.title)}
+                                className="p-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/60 text-red-400 border border-red-800/60 transition"
+                                title="Delete Article"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </main>
 
       {/* ============================================================== */}
@@ -1386,6 +1801,339 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
                 </span>
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* ============================================================== */}
+      {/* CREATE / EDIT BLOG POST MODAL                                  */}
+      {/* ============================================================== */}
+      {blogModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="w-full max-w-3xl bg-[#1E293B] border border-slate-700 rounded-3xl p-6 sm:p-8 shadow-2xl text-white my-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                  <BookOpen className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold">
+                    {blogModalMode === "create" ? "Create New Blog Post" : "Edit Blog Post"}
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Publish comprehensive rental guides to attract property owners & tenants.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setBlogModalOpen(false)}
+                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {blogFormError && (
+              <div className="mb-6 p-3.5 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-xs flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 shrink-0" />
+                <span>{blogFormError}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSaveBlog} className="space-y-5 text-xs">
+              {/* Title & Slug */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">
+                    Article Title *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={blogForm.title}
+                    onChange={(e) => {
+                      const newTitle = e.target.value;
+                      setBlogForm((prev) => ({
+                        ...prev,
+                        title: newTitle,
+                        slug:
+                          blogModalMode === "create"
+                            ? newTitle
+                                .toLowerCase()
+                                .replace(/[^a-z0-9]+/g, "-")
+                                .replace(/(^-|-$)+/g, "")
+                            : prev.slug,
+                      }));
+                    }}
+                    placeholder="e.g. 5 Proven Ways to Reduce PG Vacancies"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">
+                    URL Slug (e.g. 5-ways-to-reduce-pg-vacancies) *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={blogForm.slug}
+                    onChange={(e) =>
+                      setBlogForm((prev) => ({
+                        ...prev,
+                        slug: e.target.value
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]+/g, "-")
+                          .replace(/(^-|-$)+/g, ""),
+                      }))
+                    }
+                    placeholder="article-slug-url"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              {/* Category & Read Time */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">
+                    Category *
+                  </label>
+                  <select
+                    value={blogForm.category}
+                    onChange={(e) => setBlogForm((prev) => ({ ...prev, category: e.target.value }))}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500"
+                  >
+                    <option value="Tenant Management">Tenant Management</option>
+                    <option value="Electricity Submetering">Electricity Submetering</option>
+                    <option value="Rent Laws & Agreements">Rent Laws & Agreements</option>
+                    <option value="PG & Hostel Guide">PG & Hostel Guide</option>
+                    <option value="Property Investment">Property Investment</option>
+                    <option value="General Tips">General Tips</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">
+                    Estimated Read Time
+                  </label>
+                  <input
+                    type="text"
+                    value={blogForm.read_time}
+                    onChange={(e) => setBlogForm((prev) => ({ ...prev, read_time: e.target.value }))}
+                    placeholder="e.g. 5 min read"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500"
+                  />
+                </div>
+              </div>
+
+              {/* Excerpt */}
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">
+                  Excerpt / Google Meta Description (120-160 characters recommended) *
+                </label>
+                <textarea
+                  rows={2}
+                  required
+                  value={blogForm.excerpt}
+                  onChange={(e) => setBlogForm((prev) => ({ ...prev, excerpt: e.target.value }))}
+                  placeholder="Short summary displayed on cards, social previews, and Google search snippets..."
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500"
+                />
+              </div>
+
+              {/* Cover Photo Upload & URL */}
+              <div className="bg-slate-900/60 p-4 rounded-2xl border border-slate-700 space-y-3">
+                <label className="block text-slate-200 font-bold">
+                  Cover Photo / Article Image
+                </label>
+                <div className="grid sm:grid-cols-12 gap-3 items-center">
+                  <div className="sm:col-span-8 space-y-2">
+                    <input
+                      type="text"
+                      value={blogForm.cover_image}
+                      onChange={(e) => setBlogForm((prev) => ({ ...prev, cover_image: e.target.value }))}
+                      placeholder="Paste image URL (https://...) or upload from computer"
+                      className="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500 font-mono text-xs"
+                    />
+                    <div className="flex items-center gap-2">
+                      <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-300 transition">
+                        <UploadCloud className="w-3.5 h-3.5 text-amber-400" />
+                        <span>{blogImageUploading ? "Uploading..." : "Upload Photo from PC"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleBlogImageUpload}
+                          disabled={blogImageUploading}
+                          className="hidden"
+                        />
+                      </label>
+                      <span className="text-[11px] text-slate-500">Supports JPG, PNG, WEBP</span>
+                    </div>
+                  </div>
+
+                  <div className="sm:col-span-4 flex items-center justify-center">
+                    {blogForm.cover_image ? (
+                      <div className="w-full aspect-video rounded-xl overflow-hidden border border-slate-700 bg-slate-800 relative">
+                        <img
+                          src={blogForm.cover_image}
+                          alt="Cover Preview"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-full aspect-video rounded-xl border border-dashed border-slate-700 flex flex-col items-center justify-center text-slate-500 text-[10px]">
+                        <ImageIcon className="w-5 h-5 mb-1" />
+                        <span>No image selected</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Author Info & Tags */}
+              <div className="grid sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">
+                    Author Name
+                  </label>
+                  <input
+                    type="text"
+                    value={blogForm.author_name}
+                    onChange={(e) => setBlogForm((prev) => ({ ...prev, author_name: e.target.value }))}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">
+                    Author Role / Title
+                  </label>
+                  <input
+                    type="text"
+                    value={blogForm.author_role}
+                    onChange={(e) => setBlogForm((prev) => ({ ...prev, author_role: e.target.value }))}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">
+                    Tags (Comma-separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={blogForm.tags}
+                    onChange={(e) => setBlogForm((prev) => ({ ...prev, tags: e.target.value }))}
+                    placeholder="Electricity, Rent, PG"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500"
+                  />
+                </div>
+              </div>
+
+              {/* Status Toggles */}
+              <div className="flex flex-wrap items-center gap-6 pt-2 pb-1">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={blogForm.is_published}
+                    onChange={(e) => setBlogForm((prev) => ({ ...prev, is_published: e.target.checked }))}
+                    className="w-4 h-4 rounded text-amber-500 focus:ring-0 bg-slate-900 border-slate-700"
+                  />
+                  <span className="text-slate-200 font-bold">Publish Live (Visible on public blog page)</span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={blogForm.is_featured}
+                    onChange={(e) => setBlogForm((prev) => ({ ...prev, is_featured: e.target.checked }))}
+                    className="w-4 h-4 rounded text-amber-500 focus:ring-0 bg-slate-900 border-slate-700"
+                  />
+                  <span className="text-slate-200 font-bold">Featured Spotlight (Top banner)</span>
+                </label>
+              </div>
+
+              {/* Full Article Content */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-slate-200 font-bold">
+                    Article Content (Supports HTML headings, bold, lists, quotes) *
+                  </label>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setBlogForm((prev) => ({
+                          ...prev,
+                          content: prev.content + "\n<h2>Subheading</h2>\n<p>Paragraph text...</p>",
+                        }))
+                      }
+                      className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-mono"
+                    >
+                      + H2
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setBlogForm((prev) => ({
+                          ...prev,
+                          content: prev.content + "\n<ul>\n  <li>Bullet item 1</li>\n  <li>Bullet item 2</li>\n</ul>",
+                        }))
+                      }
+                      className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-mono"
+                    >
+                      + List
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setBlogForm((prev) => ({
+                          ...prev,
+                          content: prev.content + "\n<blockquote>\n  <strong>Key Takeaway:</strong> Add note here.\n</blockquote>",
+                        }))
+                      }
+                      className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-mono"
+                    >
+                      + Quote
+                    </button>
+                  </div>
+                </div>
+                <textarea
+                  rows={10}
+                  required
+                  value={blogForm.content}
+                  onChange={(e) => setBlogForm((prev) => ({ ...prev, content: e.target.value }))}
+                  placeholder="Enter full article content..."
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 text-white outline-none focus:border-amber-500 font-mono text-xs leading-relaxed"
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setBlogModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={blogSaving || blogImageUploading}
+                  className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold shadow-lg shadow-amber-500/20 transition disabled:opacity-60 flex items-center gap-2"
+                >
+                  {blogSaving ? (
+                    <>
+                      <RotateCw className="w-4 h-4 animate-spin" />
+                      <span>Saving Article...</span>
+                    </>
+                  ) : (
+                    <span>{blogModalMode === "create" ? "Publish Article" : "Save Changes"}</span>
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
