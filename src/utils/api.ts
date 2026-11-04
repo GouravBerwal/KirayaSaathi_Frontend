@@ -116,24 +116,22 @@ export async function apiRequest<T>(
     headers["Content-Type"] = "application/json";
   }
 
-  // Automatically attach isolated Admin Token for admin endpoints, or Owner Token for user endpoints
-  if (endpoint.startsWith("/api/admin/") || endpoint.includes("/admin/")) {
-    const adminToken =
-      typeof sessionStorage !== "undefined"
-        ? sessionStorage.getItem("kiraya_admin_token")
-        : null;
-    if (adminToken) {
-      headers["X-Admin-Token"] = adminToken;
-    }
-  } else {
-    const authToken =
-      typeof localStorage !== "undefined"
-        ? localStorage.getItem("kiraya_auth_token")
-        : null;
-    if (authToken) {
-      headers["X-Auth-Token"] = authToken;
-      headers["Authorization"] = `Bearer ${authToken}`;
-    }
+  // Attach isolated Admin Token for admin endpoints, and Auth Token for user/superuser sessions
+  const adminToken =
+    typeof sessionStorage !== "undefined"
+      ? sessionStorage.getItem("kiraya_admin_token")
+      : null;
+  if (adminToken) {
+    headers["X-Admin-Token"] = adminToken;
+  }
+
+  const authToken =
+    typeof localStorage !== "undefined"
+      ? localStorage.getItem("kiraya_auth_token")
+      : null;
+  if (authToken) {
+    headers["X-Auth-Token"] = authToken;
+    headers["Authorization"] = `Bearer ${authToken}`;
   }
 
   const unsafeMethods = ["POST", "PUT", "PATCH", "DELETE"];

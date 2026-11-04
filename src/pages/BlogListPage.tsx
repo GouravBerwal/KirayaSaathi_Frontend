@@ -314,8 +314,11 @@ export default function BlogListPage({
                 <div className="grid lg:grid-cols-12 gap-0 items-stretch">
                   <div className="lg:col-span-7 relative min-h-[260px] lg:min-h-[380px] overflow-hidden bg-slate-900">
                     <img
-                      src={featuredBlog.cover_image || "/images/logo.png"}
+                      src={featuredBlog.cover_image || "/images/blogs/submeter_formula_guide.webp"}
                       alt={featuredBlog.title}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/images/blogs/submeter_formula_guide.webp";
+                      }}
                       loading="eager"
                       className="w-full h-full object-cover object-center transform hover:scale-105 transition duration-500"
                     />

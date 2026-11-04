@@ -272,10 +272,13 @@ export default function BlogPostDetailPage({
 
             {/* Cover Image */}
             {blog.cover_image && (
-              <div className="rounded-3xl overflow-hidden shadow-lg border border-slate-200 aspect-[16/9] bg-slate-100">
+              <div className="rounded-3xl overflow-hidden shadow-lg border border-slate-200 aspect-[16/9] bg-slate-900">
                 <img
                   src={blog.cover_image}
                   alt={blog.title}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "/images/blogs/submeter_formula_guide.webp";
+                  }}
                   className="w-full h-full object-cover object-center"
                 />
               </div>
