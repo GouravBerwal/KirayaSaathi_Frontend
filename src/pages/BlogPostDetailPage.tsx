@@ -12,6 +12,7 @@ import {
   BookOpen,
   Sparkles,
   LayoutDashboard,
+  Linkedin,
 } from "lucide-react";
 import { apiRequest } from "../utils/api";
 import { BlogItem } from "./BlogListPage";
@@ -239,12 +240,19 @@ export default function BlogPostDetailPage({
               {/* Author and metadata row */}
               <div className="pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#035E7B] text-white font-bold flex items-center justify-center text-sm shadow-xs">
-                    {blog.author_name.slice(0, 1)}
+                  <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-xs ring-2 ring-[#035E7B]/20 bg-[#035E7B]">
+                    <picture>
+                      <source srcSet="/images/author_gourav.webp" type="image/webp" />
+                      <img
+                        src="/images/author_gourav.png"
+                        alt={blog.author_name || "Gourav Berwal"}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    </picture>
                   </div>
                   <div>
-                    <div className="font-bold text-slate-900 text-sm">{blog.author_name}</div>
-                    <div className="text-[11px] text-slate-500">{blog.author_role}</div>
+                    <div className="font-bold text-slate-900 text-sm">{blog.author_name || "Gourav Berwal"}</div>
+                    <div className="text-[11px] text-slate-500">{blog.author_role || "Founder & Creator of KirayaSaathi"}</div>
                   </div>
                 </div>
 
@@ -344,16 +352,59 @@ export default function BlogPostDetailPage({
             )}
 
             {/* Author Profile Bio Card */}
-            <div className="bg-gradient-to-r from-[#EAF4F7]/60 to-white p-6 sm:p-8 rounded-3xl border border-[#035E7B]/20 flex items-start gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-[#035E7B] text-white text-xl font-bold flex items-center justify-center shrink-0 shadow-sm">
-                {blog.author_name.slice(0, 1)}
-              </div>
-              <div className="space-y-1">
-                <div className="text-xs font-bold text-[#035E7B] uppercase tracking-wider">About the Author</div>
-                <h4 className="text-lg font-bold text-slate-900">{blog.author_name}</h4>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  Specialist in Indian rental housing, student hostel operations, and smart utility management. Helping property owners transition from paper registers to automated SaaS workflows.
-                </p>
+            <div className="bg-gradient-to-br from-[#EAF4F7]/80 via-white to-[#EAF4F7]/40 p-6 sm:p-8 rounded-3xl border border-[#035E7B]/20 shadow-xs">
+              <div className="flex flex-col sm:flex-row items-start gap-6">
+                <div className="relative w-24 h-28 sm:w-28 sm:h-32 rounded-2xl overflow-hidden shrink-0 shadow-md border-2 border-white ring-2 ring-[#035E7B]/25 bg-[#035E7B]">
+                  <picture>
+                    <source srcSet="/images/author_gourav.webp" type="image/webp" />
+                    <img
+                      src="/images/author_gourav.png"
+                      alt="Gourav Berwal - Founder & Creator of KirayaSaathi"
+                      className="w-full h-full object-cover object-top"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
+                <div className="space-y-3 flex-1">
+                  <div>
+                    <div className="text-xs font-bold text-[#035E7B] uppercase tracking-wider mb-1">
+                      About the Author
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                      Gourav Berwal
+                    </h3>
+                    <div className="text-xs sm:text-sm font-semibold text-[#035E7B] italic">
+                      Founder &amp; Creator of KirayaSaathi
+                    </div>
+                  </div>
+
+                  <div className="text-xs sm:text-sm text-slate-600 leading-relaxed space-y-2.5">
+                    <p>
+                      Gourav Berwal is the creator of KirayaSaathi, a technology-driven platform built to simplify rental property management for landlords, property owners and tenants. With a focus on practical innovation, intuitive digital experiences and real-world challenges, the vision is to make property management more organized, transparent and effortless.
+                    </p>
+                    <p>
+                      Through KirayaSaathi, Gourav Berwal explores the evolving world of rental management, real estate technology, landlord–tenant relationships and smarter ways to manage properties. The goal is simple: turn everyday rental challenges into simpler, smarter digital experiences.
+                    </p>
+                    <p className="font-bold text-slate-900 pt-0.5">
+                      Building smarter ways to rent, manage and grow.
+                    </p>
+                  </div>
+
+                  {/* LinkedIn Connect Button */}
+                  <div className="pt-2">
+                    <a
+                      href="https://www.linkedin.com/in/gourav-berwal"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#0A66C2] hover:bg-[#004182] text-white text-xs font-bold transition-all shadow-xs hover:shadow-md group"
+                      aria-label="Connect with Gourav Berwal on LinkedIn"
+                    >
+                      <Linkedin className="w-4 h-4 fill-current group-hover:scale-110 transition-transform" />
+                      <span>Connect on LinkedIn</span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
 

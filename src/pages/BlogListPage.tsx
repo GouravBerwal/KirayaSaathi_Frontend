@@ -354,8 +354,15 @@ export default function BlogListPage({
 
                     <div className="pt-6 border-t border-slate-100 flex items-center justify-between mt-6">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-9 h-9 rounded-full bg-[#035E7B] text-white font-bold flex items-center justify-center text-xs shadow-xs">
-                          {featuredBlog.author_name.slice(0, 1)}
+                        <div className="w-9 h-9 rounded-full overflow-hidden shrink-0 shadow-xs ring-1 ring-[#035E7B]/20 bg-[#035E7B]">
+                          <picture>
+                            <source srcSet="/images/author_gourav.webp" type="image/webp" />
+                            <img
+                              src="/images/author_gourav.png"
+                              alt={featuredBlog.author_name}
+                              className="w-full h-full object-cover object-top"
+                            />
+                          </picture>
                         </div>
                         <div>
                           <div className="text-xs font-bold text-slate-900">{featuredBlog.author_name}</div>
@@ -430,8 +437,15 @@ export default function BlogListPage({
 
                       <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-[#EAF4F7] text-[#035E7B] font-bold text-[11px] flex items-center justify-center">
-                            {post.author_name.slice(0, 1)}
+                          <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 ring-1 ring-[#035E7B]/20 bg-[#035E7B]">
+                            <picture>
+                              <source srcSet="/images/author_gourav.webp" type="image/webp" />
+                              <img
+                                src="/images/author_gourav.png"
+                                alt={post.author_name}
+                                className="w-full h-full object-cover object-top"
+                              />
+                            </picture>
                           </div>
                           <span className="text-xs font-semibold text-slate-700 truncate max-w-[120px]">
                             {post.author_name}
