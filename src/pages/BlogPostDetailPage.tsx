@@ -223,6 +223,20 @@ export default function BlogPostDetailPage({
 
             {/* Header info */}
             <header className="space-y-4">
+              {blog.is_published === false && (
+                <div className="p-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-900 text-xs font-bold flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+                    <span>Admin Draft Preview: This article is currently hidden from the public website.</span>
+                  </div>
+                  <Link
+                    to="/admin-portal"
+                    className="px-3 py-1 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-[11px] transition shadow-xs"
+                  >
+                    Manage in Admin
+                  </Link>
+                </div>
+              )}
               <div className="inline-flex items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-[#EAF4F7] text-[#035E7B] text-xs font-bold">
                   {blog.category}

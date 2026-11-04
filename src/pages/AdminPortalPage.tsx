@@ -211,9 +211,13 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
         username: string;
         is_staff?: boolean;
         is_superuser?: boolean;
+        admin_token?: string;
       }>("/api/auth/me/");
 
       if (me.is_staff || me.is_superuser) {
+        if (me.admin_token) {
+          sessionStorage.setItem("kiraya_admin_token", me.admin_token);
+        }
         setIsAdminUser(true);
         setCurrentAdminName(me.username);
         await loadAdminData();
