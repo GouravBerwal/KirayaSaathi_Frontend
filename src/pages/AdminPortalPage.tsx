@@ -14,6 +14,7 @@ import {
   HelpCircle,
   ShieldAlert,
   Eye,
+  EyeOff,
   LogOut,
   UserCheck,
   UserX,
@@ -403,6 +404,30 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
       setStatusNotice({
         type: "error",
         message: err instanceof ApiError ? err.message : "Failed to delete blog article.",
+      });
+    }
+  }
+
+  async function handleTogglePublish(blog: AdminBlogPost) {
+    const nextState = !blog.is_published;
+    try {
+      await apiRequest(`/api/admin/blogs/${blog.id}/`, {
+        method: "PUT",
+        body: { is_published: nextState },
+      });
+      setStatusNotice({
+        type: "success",
+        message: nextState
+          ? `"${blog.title}" is now unhidden and visible on the public blog page!`
+          : `"${blog.title}" has been hidden from the public blog page.`,
+      });
+      setBlogs((prev) =>
+        prev.map((b) => (b.id === blog.id ? { ...b, is_published: nextState } : b))
+      );
+    } catch (err: unknown) {
+      setStatusNotice({
+        type: "error",
+        message: err instanceof ApiError ? err.message : "Failed to update blog visibility status.",
       });
     }
   }
@@ -1614,21 +1639,47 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
                             {b.views_count.toLocaleString()}
                           </td>
                           <td className="py-3 px-4">
-                            {b.is_published ? (
-                              <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold flex items-center gap-1 w-fit">
-                                <CheckCircle2 className="w-3 h-3" /> Published
-                              </span>
-                            ) : (
-                              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 text-[10px] font-bold w-fit">
-                                Draft
-                              </span>
-                            )}
+                            <button
+                              type="button"
+                              onClick={() => handleTogglePublish(b)}
+                              className="group cursor-pointer transition focus:outline-none"
+                              title={b.is_published ? "Click to Hide blog from public website" : "Click to Unhide / Publish blog to website"}
+                            >
+                              {b.is_published ? (
+                                <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold flex items-center gap-1.5 hover:bg-emerald-500/30 transition">
+                                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                                  <span>Visible</span>
+                                </span>
+                              ) : (
+                                <span className="px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/30 text-[10px] font-bold flex items-center gap-1.5 hover:bg-amber-500/25 transition">
+                                  <EyeOff className="w-3 h-3 text-amber-400" />
+                                  <span>Hidden (Draft)</span>
+                                </span>
+                              )}
+                            </button>
                           </td>
                           <td className="py-3 px-4 text-slate-400 font-mono text-[11px]">
                             {b.created_at ? new Date(b.created_at).toLocaleDateString() : "—"}
                           </td>
                           <td className="py-3 px-4 text-right">
                             <div className="flex items-center justify-end gap-1.5">
+                              {/* One-click Hide / Unhide Toggle */}
+                              <button
+                                type="button"
+                                onClick={() => handleTogglePublish(b)}
+                                className={`p-1.5 rounded-lg border transition ${
+                                  b.is_published
+                                    ? "bg-slate-800 hover:bg-amber-950/50 text-slate-400 hover:text-amber-400 border-slate-700 hover:border-amber-700/60"
+                                    : "bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-400 border-emerald-800/60"
+                                }`}
+                                title={b.is_published ? "Hide from Public Website" : "Unhide / Publish to Public Website"}
+                              >
+                                {b.is_published ? (
+                                  <EyeOff className="w-3.5 h-3.5" />
+                                ) : (
+                                  <Eye className="w-3.5 h-3.5" />
+                                )}
+                              </button>
                               <a
                                 href={`/blog/${b.slug}`}
                                 target="_blank"
@@ -2031,27 +2082,58 @@ export default function AdminPortalPage({ onExit }: AdminPortalPageProps) {
                 </div>
               </div>
 
-              {/* Status Toggles */}
-              <div className="flex flex-wrap items-center gap-6 pt-2 pb-1">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={blogForm.is_published}
-                    onChange={(e) => setBlogForm((prev) => ({ ...prev, is_published: e.target.checked }))}
-                    className="w-4 h-4 rounded text-amber-500 focus:ring-0 bg-slate-900 border-slate-700"
-                  />
-                  <span className="text-slate-200 font-bold">Publish Live (Visible on public blog page)</span>
-                </label>
+              {/* Status Toggles & Visibility */}
+              <div className="p-4 rounded-2xl bg-slate-900 border border-slate-700/80 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-bold text-white flex items-center gap-2">
+                      {blogForm.is_published ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                          <span className="text-emerald-400">Public Visibility: Visible (Unhidden)</span>
+                        </>
+                      ) : (
+                        <>
+                          <EyeOff className="w-4 h-4 text-amber-400" />
+                          <span className="text-amber-400">Public Visibility: Hidden (Draft only)</span>
+                        </>
+                      )}
+                    </div>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      {blogForm.is_published
+                        ? "This article is public and viewable by everyone on the blog page."
+                        : "This article is hidden from the public blog page. Only admins can see it here."}
+                    </p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={blogForm.is_published}
+                      onChange={(e) => setBlogForm((prev) => ({ ...prev, is_published: e.target.checked }))}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                  </label>
+                </div>
 
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={blogForm.is_featured}
-                    onChange={(e) => setBlogForm((prev) => ({ ...prev, is_featured: e.target.checked }))}
-                    className="w-4 h-4 rounded text-amber-500 focus:ring-0 bg-slate-900 border-slate-700"
-                  />
-                  <span className="text-slate-200 font-bold">Featured Spotlight (Top banner)</span>
-                </label>
+                <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-bold text-white flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-amber-400" />
+                      <span>Featured Spotlight</span>
+                    </div>
+                    <p className="text-xs text-slate-400">Pin as top hero guide on the blog page.</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={blogForm.is_featured}
+                      onChange={(e) => setBlogForm((prev) => ({ ...prev, is_featured: e.target.checked }))}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+                  </label>
+                </div>
               </div>
 
               {/* Full Article Content */}

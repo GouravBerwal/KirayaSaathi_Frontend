@@ -384,87 +384,89 @@ export default function BlogListPage({
             )}
 
             {/* ARTICLES GRID */}
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-slate-900 tracking-tight">
-                  {selectedCategory === "All" ? "Latest Articles" : `${selectedCategory} Articles`}
-                </h3>
-                <span className="text-xs font-semibold text-slate-500">
-                  {regularBlogs.length} {regularBlogs.length === 1 ? "article" : "articles"} available
-                </span>
-              </div>
+            {regularBlogs.length > 0 && (
+              <div>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                    {selectedCategory === "All" ? "Latest Articles" : `${selectedCategory} Articles`}
+                  </h3>
+                  <span className="text-xs font-semibold text-slate-500">
+                    {regularBlogs.length} {regularBlogs.length === 1 ? "article" : "articles"} available
+                  </span>
+                </div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                {regularBlogs.map((post) => (
-                  <article
-                    key={post.id}
-                    className="bg-white rounded-3xl border border-slate-200/90 overflow-hidden hover:border-[#035E7B]/40 hover:shadow-lg transition-all flex flex-col group"
-                  >
-                    <Link to={`/blog/${post.slug}`} className="block relative aspect-video overflow-hidden bg-slate-100">
-                      <img
-                        src={post.cover_image || "/images/logo.png"}
-                        alt={post.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                      />
-                      <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-md bg-white/95 backdrop-blur-sm text-[11px] font-bold text-[#035E7B] shadow-xs">
-                        {post.category}
-                      </span>
-                    </Link>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                  {regularBlogs.map((post) => (
+                    <article
+                      key={post.id}
+                      className="bg-white rounded-3xl border border-slate-200/90 overflow-hidden hover:border-[#035E7B]/40 hover:shadow-lg transition-all flex flex-col group"
+                    >
+                      <Link to={`/blog/${post.slug}`} className="block relative aspect-video overflow-hidden bg-slate-100">
+                        <img
+                          src={post.cover_image || "/images/logo.png"}
+                          alt={post.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                        />
+                        <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-md bg-white/95 backdrop-blur-sm text-[11px] font-bold text-[#035E7B] shadow-xs">
+                          {post.category}
+                        </span>
+                      </Link>
 
-                    <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                      <div className="space-y-2.5">
-                        <div className="flex items-center gap-3 text-[11px] text-slate-500 font-semibold">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3" /> {post.formatted_date}
-                          </span>
-                          <span>•</span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" /> {post.read_time}
-                          </span>
-                        </div>
-
-                        <h4 className="text-lg font-bold text-slate-900 group-hover:text-[#035E7B] transition line-clamp-2 leading-snug">
-                          <Link to={`/blog/${post.slug}`}>
-                            {post.title}
-                          </Link>
-                        </h4>
-
-                        <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
-                          {post.excerpt}
-                        </p>
-                      </div>
-
-                      <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 ring-1 ring-[#035E7B]/20 bg-[#035E7B]">
-                            <picture>
-                              <source srcSet="/images/author_gourav.webp" type="image/webp" />
-                              <img
-                                src="/images/author_gourav.png"
-                                alt={post.author_name}
-                                className="w-full h-full object-cover object-top"
-                              />
-                            </picture>
+                      <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div className="space-y-2.5">
+                          <div className="flex items-center gap-3 text-[11px] text-slate-500 font-semibold">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3" /> {post.formatted_date}
+                            </span>
+                            <span>•</span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" /> {post.read_time}
+                            </span>
                           </div>
-                          <span className="text-xs font-semibold text-slate-700 truncate max-w-[120px]">
-                            {post.author_name}
-                          </span>
+
+                          <h4 className="text-lg font-bold text-slate-900 group-hover:text-[#035E7B] transition line-clamp-2 leading-snug">
+                            <Link to={`/blog/${post.slug}`}>
+                              {post.title}
+                            </Link>
+                          </h4>
+
+                          <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">
+                            {post.excerpt}
+                          </p>
                         </div>
 
-                        <Link
-                          to={`/blog/${post.slug}`}
-                          className="text-xs font-bold text-[#035E7B] group-hover:translate-x-0.5 transition inline-flex items-center gap-1"
-                        >
-                          <span>Read</span>
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
+                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 ring-1 ring-[#035E7B]/20 bg-[#035E7B]">
+                              <picture>
+                                <source srcSet="/images/author_gourav.webp" type="image/webp" />
+                                <img
+                                  src="/images/author_gourav.png"
+                                  alt={post.author_name}
+                                  className="w-full h-full object-cover object-top"
+                                />
+                              </picture>
+                            </div>
+                            <span className="text-xs font-semibold text-slate-700 truncate max-w-[120px]">
+                              {post.author_name}
+                            </span>
+                          </div>
+
+                          <Link
+                            to={`/blog/${post.slug}`}
+                            className="text-xs font-bold text-[#035E7B] group-hover:translate-x-0.5 transition inline-flex items-center gap-1"
+                          >
+                            <span>Read</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 

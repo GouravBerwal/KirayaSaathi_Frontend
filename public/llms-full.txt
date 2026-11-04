@@ -1,9 +1,9 @@
-# KirayaSaathi — Comprehensive Platform Documentation for AI Agents & Search Engines
+# KirayaSaathi — Smart Rental and Tenant Management System (Full Documentation for AI & Search Engines)
 
-> Complete technical and operational specification for KirayaSaathi (https://www.kirayasaathi.app), the smart property management SaaS platform designed for property owners, hostels, and PGs in India.
+> Complete technical and operational specification for KirayaSaathi (https://www.kirayasaathi.app), India's leading smart rental and tenant management system designed for property owners, hostels, and PGs.
 
 ## 1. Overview
-KirayaSaathi is a full-stack, cloud-hosted SaaS platform engineered to eliminate paper registers, Excel sheets, and manual calculation errors in property and rental management. 
+KirayaSaathi is a full-stack, cloud-hosted smart rental and tenant management system engineered to eliminate paper registers, Excel sheets, and manual calculation errors in property and rental management. 
 
 ### Why Landlords Choose KirayaSaathi:
 1. **Zero Math Calculation**: Rent, electricity unit usage, and previous balance rollovers calculate automatically.
