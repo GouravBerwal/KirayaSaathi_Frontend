@@ -1,11 +1,28 @@
 {
+  "id": "/?source=pwa",
   "name": "KirayaSaathi — Smart Rental & Tenant Management",
   "short_name": "KirayaSaathi",
   "description": "Smart rental property, tenant, room, electricity meter, and rent management platform for property owners, hostels, and PGs in India.",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
   "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait-primary",
   "background_color": "#ffffff",
   "theme_color": "#035E7B",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": [
+    "business",
+    "finance",
+    "productivity",
+    "utilities"
+  ],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/favicon-48x48.png",
@@ -32,6 +49,74 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot-desktop-1.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "KirayaSaathi Property & Rental Web Dashboard"
+    },
+    {
+      "src": "/screenshots/screenshot-mobile-1.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "KirayaSaathi Mobile Tenant & Room Overview"
+    },
+    {
+      "src": "/screenshots/screenshot-mobile-2.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Submeter Electricity Bill Calculation"
+    },
+    {
+      "src": "/screenshots/screenshot-mobile-3.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Instant PDF Invoices and Rent Tracking"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View rental overview and properties",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/favicon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Add Tenant",
+      "short_name": "Add Tenant",
+      "description": "Add new tenant details",
+      "url": "/dashboard?action=add-tenant",
+      "icons": [
+        {
+          "src": "/favicon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Electricity Bill",
+      "short_name": "Electricity",
+      "description": "Calculate meter readings and generate bill",
+      "url": "/dashboard?action=electricity",
+      "icons": [
+        {
+          "src": "/favicon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
