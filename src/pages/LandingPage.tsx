@@ -2132,9 +2132,10 @@ export default function LandingPage({
                 Company
               </h5>
               <ul className="space-y-2.5 text-sm text-gray-400">
-                <li><a href="/blog" className="hover:text-white transition">Latest News</a></li>
+                <li><a href="/blog" className="hover:text-white transition">Latest News &amp; Blog</a></li>
                 <li><a href="#about" className="hover:text-white transition">About Us</a></li>
-                <li><a href="#about" className="hover:text-white transition">Founder & Vision</a></li>
+                <li><a href="#about" className="hover:text-white transition">Founder &amp; Vision</a></li>
+                <li><a href="/privacy" className="hover:text-white transition">Privacy Policy</a></li>
                 <li><a href="#testimonials" className="hover:text-white transition">Customer Reviews</a></li>
                 <li><a href="#contact" className="hover:text-white transition">Contact Us</a></li>
               </ul>
@@ -2184,7 +2185,7 @@ export default function LandingPage({
               © 2026 KirayaSaathi Technologies. All Rights Reserved.
             </div>
             <div className="flex items-center gap-6">
-              <a href="#hero" className="hover:text-white transition">Privacy Policy</a>
+              <a href="/privacy" className="text-white font-medium hover:underline transition">Privacy Policy</a>
               <a href="#hero" className="hover:text-white transition">Terms of Service</a>
               <button
                 type="button"

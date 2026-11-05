@@ -35,6 +35,7 @@ import { RecordPaymentModal } from './components/RecordPaymentModal';
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
 const BlogListPage = React.lazy(() => import('./pages/BlogListPage'));
 const BlogPostDetailPage = React.lazy(() => import('./pages/BlogPostDetailPage'));
+const PrivacyPolicyPage = React.lazy(() => import('./pages/PrivacyPolicyPage'));
 const AdminPortalPage = React.lazy(() => import('./pages/AdminPortalPage'));
 const OwnerVerificationPage = React.lazy(() => import('./pages/OwnerVerificationPage'));
 const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
@@ -2572,6 +2573,19 @@ function AppContent() {
             }
           />
           <Route
+            path="/privacy"
+            element={
+              <PrivacyPolicyPage
+                onBackToLanding={() => navigate('/')}
+                isAuthenticated={false}
+              />
+            }
+          />
+          <Route
+            path="/privacy-policy"
+            element={<Navigate to="/privacy" replace />}
+          />
+          <Route
             path="/admin-portal"
             element={
               <AdminPortalPage
@@ -2782,6 +2796,22 @@ function AppContent() {
                     />
                   </div>
                 }
+              />
+              <Route
+                path="/privacy"
+                element={
+                  <div className="-m-3 sm:-m-6 md:-m-8">
+                    <PrivacyPolicyPage
+                      onBackToLanding={() => navigate('/')}
+                      onOpenDashboard={() => handleNavigate('dashboard')}
+                      isAuthenticated={isAuthenticated}
+                    />
+                  </div>
+                }
+              />
+              <Route
+                path="/privacy-policy"
+                element={<Navigate to="/privacy" replace />}
               />
               <Route
                 path="/admin-portal"

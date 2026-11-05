@@ -507,6 +507,7 @@ export default function BlogListPage({
           <div className="flex items-center gap-6">
             <Link to="/" className="hover:text-white transition">Home</Link>
             <Link to="/blog" className="hover:text-white transition text-white font-bold">Blog</Link>
+            <Link to="/privacy" className="hover:text-white transition">Privacy Policy</Link>
             <Link to="/login" className="hover:text-white transition">Login</Link>
             <Link to="/signup" className="hover:text-white transition">Sign Up</Link>
           </div>

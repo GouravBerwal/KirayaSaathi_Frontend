@@ -1098,19 +1098,29 @@ export default function LoginPage({
 
         {/* Bottom Mode Switcher */}
         {(mode === "login" || mode === "signup") && (
-          <p className="mt-6 text-center text-xs sm:text-sm text-gray-500">
-            {mode === "login"
-              ? "Don't have an owner account? "
-              : "Already have an account? "}
+          <>
+            <p className="mt-6 text-center text-xs sm:text-sm text-gray-500">
+              {mode === "login"
+                ? "Don't have an owner account? "
+                : "Already have an account? "}
 
-            <button
-              type="button"
-              onClick={() => switchMode(mode === "login" ? "signup" : "login")}
-              className="font-bold text-[#035E7B] hover:underline"
-            >
-              {mode === "login" ? "Sign Up" : "Log In"}
-            </button>
-          </p>
+              <button
+                type="button"
+                onClick={() => switchMode(mode === "login" ? "signup" : "login")}
+                className="font-bold text-[#035E7B] hover:underline"
+              >
+                {mode === "login" ? "Sign Up" : "Log In"}
+              </button>
+            </p>
+
+            <p className="mt-3 text-center text-[11px] text-gray-400">
+              By continuing, you agree to KirayaSaathi&apos;s{" "}
+              <a href="/privacy" className="text-[#035E7B] underline font-medium hover:text-[#024B63]">
+                Privacy Policy
+              </a>{" "}
+              and platform terms.
+            </p>
+          </>
         )}
 
         {onOpenAdminPortal && (
